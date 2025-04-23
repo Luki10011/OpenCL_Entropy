@@ -1,1 +1,2 @@
-# OpenCL_Entropy
+# Objects counting with entropy
+
