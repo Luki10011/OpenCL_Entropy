@@ -7,6 +7,8 @@ https://ieeexplore-1ieee-1org-1000047xf0025.wbg2.bg.agh.edu.pl/document/10819103
 
 ### Entropy and color correlation for image indexing
 https://ieeexplore-1ieee-1org-1000047tm0149.wbg2.bg.agh.edu.pl/document/825380/metrics#metrics
+### An Efficient Algorithm for Parallel Computation of Rough Entropy Using CUDA
+https://ieeexplore.ieee.org/abstract/document/8288431
 
 ### Entropy Measurement within Graphical Scenes
 https://ieeexplore-1ieee-1org-1000047tm0149.wbg2.bg.agh.edu.pl/document/5480459
