@@ -21,7 +21,7 @@ def test_entropy(img_name: str, struct_elem: np.ndarray) -> float:
     if not os.path.exists(OUT_DIR):
         os.mkdir(OUT_DIR)
         
-    cv2.imwrite(os.path.join(OUT_DIR, "entr_img.png"), entr_img)
+    cv2.imwrite(os.path.join(OUT_DIR, "entr_{img_name}.png"), entr_img)
     
     return comp_time
 
