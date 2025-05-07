@@ -1,0 +1,3 @@
+C:/Semestr_8/Akceleracja_algorytmow_w_OpenGL/OpenCL_Entropy/windows/build/CMakeFiles/ImageEntropyCalculator.dir
+C:/Semestr_8/Akceleracja_algorytmow_w_OpenGL/OpenCL_Entropy/windows/build/CMakeFiles/edit_cache.dir
+C:/Semestr_8/Akceleracja_algorytmow_w_OpenGL/OpenCL_Entropy/windows/build/CMakeFiles/rebuild_cache.dir
