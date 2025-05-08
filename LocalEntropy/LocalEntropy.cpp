@@ -216,7 +216,7 @@ LocalEntropy::setupCL()
     /*
     * Create and initialize memory objects
     */
-    inputImage2DHist = cl::Image2D(context,
+    inputImage2DGray = cl::Image2D(context,
                                CL_MEM_READ_ONLY,
                                cl::ImageFormat(CL_RGBA, CL_UNSIGNED_INT8),
                                width,
@@ -224,11 +224,11 @@ LocalEntropy::setupCL()
                                0,
                                NULL,
                                &err);
-    CHECK_OPENCL_ERROR(err, "Image2D::Image2D() failed. (inputImage2DHist)");
+    CHECK_OPENCL_ERROR(err, "Image2D::Image2D() failed. (inputImage2DGray)");
 
 
     // Create memory objects for output Image
-    outputImage2DHist = cl::Image2D(context,
+    outputImage2DGray = cl::Image2D(context,
                                 CL_MEM_WRITE_ONLY,
                                 cl::ImageFormat(CL_RGBA, CL_UNSIGNED_INT8),
                                 width,
@@ -236,7 +236,7 @@ LocalEntropy::setupCL()
                                 0,
                                 0,
                                 &err);
-    CHECK_OPENCL_ERROR(err, "Image2D::Image2D() failed. (outputImage2DHist)");
+    CHECK_OPENCL_ERROR(err, "Image2D::Image2D() failed. (outputImage2DGray)");
 
     /*
     * Create and initialize memory objects
@@ -249,7 +249,7 @@ LocalEntropy::setupCL()
                                 0,
                                 NULL,
                                 &err);
-    CHECK_OPENCL_ERROR(err, "Image2D::Image2D() failed. (inputImage2DHist)");
+    CHECK_OPENCL_ERROR(err, "Image2D::Image2D() failed. (inputImage2DGray)");
 
 
     // Create memory objects for output Image
@@ -261,7 +261,7 @@ LocalEntropy::setupCL()
                                 0,
                                 0,
                                 &err);
-    CHECK_OPENCL_ERROR(err, "Image2D::Image2D() failed. (outputImage2DHist)");
+    CHECK_OPENCL_ERROR(err, "Image2D::Image2D() failed. (outputImage2DGray)");
 
     device.push_back(devices[sampleArgs->deviceId]);
 
@@ -345,15 +345,15 @@ LocalEntropy::setupCL()
     CHECK_OPENCL_ERROR(err, "Program::build() failed.");
 
     // Create kernel Histgram kernel
-    histogramKernel = cl::Kernel(program, "histogram", &err);
-    CHECK_OPENCL_ERROR(err, "Failed to create histogram kernel");
+    grayscaleKernel = cl::Kernel(program, "toGrayscale", &err);
+    CHECK_OPENCL_ERROR(err, "Failed to create grayscale kernel");
 
     entropyKernel = cl::Kernel(program, "entropy", &err);
     CHECK_OPENCL_ERROR(err, "Failed to create entropy kernel");
     
 
     // Check group size against group size returned by kernel
-    kernelWorkGroupSize = histogramKernel.getWorkGroupInfo<CL_KERNEL_WORK_GROUP_SIZE>
+    kernelWorkGroupSize = grayscaleKernel.getWorkGroupInfo<CL_KERNEL_WORK_GROUP_SIZE>
                           (devices[sampleArgs->deviceId], &err);
     CHECK_OPENCL_ERROR(err, "Kernel::getWorkGroupInfo()  failed.");
 
@@ -398,7 +398,7 @@ LocalEntropy::runCLKernels()
 
     cl::Event writeEvt;
     status = commandQueue.enqueueWriteImage(
-                inputImage2DHist,
+                inputImage2DGray,
                  CL_TRUE,
                  origin,
                  region,
@@ -408,7 +408,7 @@ LocalEntropy::runCLKernels()
                  NULL,
                  &writeEvt);
     CHECK_OPENCL_ERROR(status,
-                       "CommandQueue::enqueueWriteImage failed. (inputImage2DHist)");
+                       "CommandQueue::enqueueWriteImage failed. (inputImage2DGray)");
 
     status = commandQueue.flush();
     CHECK_OPENCL_ERROR(status, "cl::CommandQueue.flush failed.");
@@ -424,13 +424,13 @@ LocalEntropy::runCLKernels()
 
     }
 
-    // Set appropriate arguments to the kernel
-    // input buffer image
-    status = histogramKernel.setArg(0, inputImage2DHist);
+    // Set appropriate arguments to the grayscale kernel
+    // input buffer grayscale image
+    status = grayscaleKernel.setArg(0, inputImage2DGray);
     CHECK_OPENCL_ERROR(status, "Kernel::setArg() failed. (inputImageBuffer)");
 
     // outBuffer imager
-    status = histogramKernel.setArg(1, inputImage2DEntropy);
+    status = grayscaleKernel.setArg(1, inputImage2DEntropy);
     CHECK_OPENCL_ERROR(status, "Kernel::setArg() failed. (outputImageBuffer)");
 
 
@@ -442,7 +442,7 @@ LocalEntropy::runCLKernels()
 
     cl::Event histEvt;
     status = commandQueue.enqueueNDRangeKernel(
-                histogramKernel,
+                grayscaleKernel,
                  cl::NullRange,
                  globalThreads,
                  localThreads,

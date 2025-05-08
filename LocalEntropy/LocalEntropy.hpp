@@ -51,13 +51,13 @@ class LocalEntropy
         std::vector<cl::Device> devices;                /**< CL device list */
         std::vector<cl::Device> device;                 /**< CL device to be used */
         std::vector<cl::Platform> platforms;            /**< list of platforms */
-        cl::Image2D inputImage2DHist;                       /**< CL Input image2d */
-        cl::Image2D outputImage2DHist;                      /**< CL Output image2d */
+        cl::Image2D inputImage2DGray;                       /**< CL Input image2d */
+        cl::Image2D outputImage2DGray;                      /**< CL Output image2d */
         cl::Image2D inputImage2DEntropy;                       /**< CL Input image2d */
         cl::Image2D outputImage2DEntropy;                      /**< CL Output image2d */
         cl::CommandQueue commandQueue;                  /**< CL command queue */
         cl::Program program;                            /**< CL program  */
-        cl::Kernel histogramKernel;                     /**< Histogram Kernel */
+        cl::Kernel grayscaleKernel;                     /**< Grayscale Kernel */
         cl::Kernel entropyKernel;                       /**< Entropy Kernel */
 
         cl_uchar* verificationOutput;       /**< Output array for reference implementation */

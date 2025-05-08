@@ -3,7 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/home/romannowak/AMDAPPSDK-3.0/include",
+                "/home/romannowak/AMDAPPSDK-3.0/include/SDKUtil"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
