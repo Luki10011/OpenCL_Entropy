@@ -18,7 +18,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include "LocalEntropy.hpp"
 #include <cmath>
 
-///************************** NIE USUWAC *****************************
+
 int
 LocalEntropy::readInputImage(std::string inputImageName)
 {
@@ -76,10 +76,8 @@ LocalEntropy::readInputImage(std::string inputImageName)
     return SDK_SUCCESS;
 
 }
-///*******************************************************************
 
 
-///************************** NIE USUWAC *****************************
 int
 LocalEntropy::writeOutputImage(std::string outputImageName)
 {
@@ -95,7 +93,6 @@ LocalEntropy::writeOutputImage(std::string outputImageName)
 
     return SDK_SUCCESS;
 }
-///*******************************************************************
 
 int
 LocalEntropy::genBinaryImage()
@@ -216,7 +213,7 @@ LocalEntropy::setupCL()
     /*
     * Create and initialize memory objects
     */
-    inputImage2DHist = cl::Image2D(context,
+    inputImage2D = cl::Image2D(context,
                                CL_MEM_READ_ONLY,
                                cl::ImageFormat(CL_RGBA, CL_UNSIGNED_INT8),
                                width,
@@ -224,11 +221,11 @@ LocalEntropy::setupCL()
                                0,
                                NULL,
                                &err);
-    CHECK_OPENCL_ERROR(err, "Image2D::Image2D() failed. (inputImage2DHist)");
+    CHECK_OPENCL_ERROR(err, "Image2D::Image2D() failed. (inputImage2D)");
 
 
     // Create memory objects for output Image
-    outputImage2DHist = cl::Image2D(context,
+    outputImage2D = cl::Image2D(context,
                                 CL_MEM_WRITE_ONLY,
                                 cl::ImageFormat(CL_RGBA, CL_UNSIGNED_INT8),
                                 width,
@@ -236,32 +233,7 @@ LocalEntropy::setupCL()
                                 0,
                                 0,
                                 &err);
-    CHECK_OPENCL_ERROR(err, "Image2D::Image2D() failed. (outputImage2DHist)");
-
-    /*
-    * Create and initialize memory objects
-    */
-   inputImage2DEntropy = cl::Image2D(context,
-                                CL_MEM_READ_WRITE,
-                                cl::ImageFormat(CL_RGBA, CL_UNSIGNED_INT8),
-                                width,
-                                height,
-                                0,
-                                NULL,
-                                &err);
-    CHECK_OPENCL_ERROR(err, "Image2D::Image2D() failed. (inputImage2DHist)");
-
-
-    // Create memory objects for output Image
-    outputImage2DEntropy = cl::Image2D(context,
-                                CL_MEM_WRITE_ONLY,
-                                cl::ImageFormat(CL_RGBA, CL_UNSIGNED_INT8),
-                                width,
-                                height,
-                                0,
-                                0,
-                                &err);
-    CHECK_OPENCL_ERROR(err, "Image2D::Image2D() failed. (outputImage2DHist)");
+    CHECK_OPENCL_ERROR(err, "Image2D::Image2D() failed. (outputImage2D)");
 
     device.push_back(devices[sampleArgs->deviceId]);
 
@@ -287,7 +259,7 @@ LocalEntropy::setupCL()
     }
     else
     {
-        kernelPath.append("LocalEntropy_Kernels.cl");
+        kernelPath.append("LocalEntropy_Kernel.cl");
         if(!kernelFile.open(kernelPath.c_str()))
         {
             std::cout << "Failed to load kernel file : " << kernelPath << std::endl;
@@ -344,16 +316,12 @@ LocalEntropy::setupCL()
     }
     CHECK_OPENCL_ERROR(err, "Program::build() failed.");
 
-    // Create kernel Histgram kernel
-    histogramKernel = cl::Kernel(program, "histogram", &err);
-    CHECK_OPENCL_ERROR(err, "Failed to create histogram kernel");
-
-    entropyKernel = cl::Kernel(program, "entropy", &err);
-    CHECK_OPENCL_ERROR(err, "Failed to create entropy kernel");
-    
+    // Create kernel
+    kernel = cl::Kernel(program, "localEntropy",  &err);
+    CHECK_OPENCL_ERROR(err, "Kernel::Kernel() failed.");
 
     // Check group size against group size returned by kernel
-    kernelWorkGroupSize = histogramKernel.getWorkGroupInfo<CL_KERNEL_WORK_GROUP_SIZE>
+    kernelWorkGroupSize = kernel.getWorkGroupInfo<CL_KERNEL_WORK_GROUP_SIZE>
                           (devices[sampleArgs->deviceId], &err);
     CHECK_OPENCL_ERROR(err, "Kernel::getWorkGroupInfo()  failed.");
 
@@ -376,8 +344,6 @@ LocalEntropy::setupCL()
         }
     }
 
-
-
     return SDK_SUCCESS;
 }
 
@@ -398,7 +364,7 @@ LocalEntropy::runCLKernels()
 
     cl::Event writeEvt;
     status = commandQueue.enqueueWriteImage(
-                inputImage2DHist,
+                 inputImage2D,
                  CL_TRUE,
                  origin,
                  region,
@@ -408,7 +374,7 @@ LocalEntropy::runCLKernels()
                  NULL,
                  &writeEvt);
     CHECK_OPENCL_ERROR(status,
-                       "CommandQueue::enqueueWriteImage failed. (inputImage2DHist)");
+                       "CommandQueue::enqueueWriteImage failed. (inputImage2D)");
 
     status = commandQueue.flush();
     CHECK_OPENCL_ERROR(status, "cl::CommandQueue.flush failed.");
@@ -426,13 +392,12 @@ LocalEntropy::runCLKernels()
 
     // Set appropriate arguments to the kernel
     // input buffer image
-    status = histogramKernel.setArg(0, inputImage2DHist);
+    status = kernel.setArg(0, inputImage2D);
     CHECK_OPENCL_ERROR(status, "Kernel::setArg() failed. (inputImageBuffer)");
 
     // outBuffer imager
-    status = histogramKernel.setArg(1, inputImage2DEntropy);
+    status = kernel.setArg(1, outputImage2D);
     CHECK_OPENCL_ERROR(status, "Kernel::setArg() failed. (outputImageBuffer)");
-
 
     /*
     * Enqueue a kernel run call.
@@ -440,40 +405,15 @@ LocalEntropy::runCLKernels()
     cl::NDRange globalThreads(width, height);
     cl::NDRange localThreads(blockSizeX, blockSizeY);
 
-    cl::Event histEvt;
+    cl::Event ndrEvt;
     status = commandQueue.enqueueNDRangeKernel(
-                histogramKernel,
+                 kernel,
                  cl::NullRange,
                  globalThreads,
                  localThreads,
                  0,
-                 &histEvt);
+                 &ndrEvt);
     CHECK_OPENCL_ERROR(status, "CommandQueue::enqueueNDRangeKernel() failed.");
-
-    status = commandQueue.flush();
-    CHECK_OPENCL_ERROR(status, "cl::CommandQueue.flush failed.");
-
-
-    // Set appropriate arguments to the kernel
-    // input buffer image
-    status = entropyKernel.setArg(0, inputImage2DEntropy);
-    CHECK_OPENCL_ERROR(status, "Kernel::setArg() failed. (inputImageBuffer)");
-
-    // outBuffer imager
-    status = entropyKernel.setArg(1, outputImage2DEntropy);
-    CHECK_OPENCL_ERROR(status, "Kernel::setArg() failed. (outputImageBuffer)");
-
-
-    cl::Event entropyEvent;
-    status = commandQueue.enqueueNDRangeKernel(
-                 entropyKernel,
-                 cl::NullRange,
-                 globalThreads,
-                 localThreads,
-                 0,
-                 &entropyEvent);
-    CHECK_OPENCL_ERROR(status, "CommandQueue::enqueueNDRangeKernel() failed.");
-
 
     status = commandQueue.flush();
     CHECK_OPENCL_ERROR(status, "cl::CommandQueue.flush failed.");
@@ -481,7 +421,7 @@ LocalEntropy::runCLKernels()
     eventStatus = CL_QUEUED;
     while(eventStatus != CL_COMPLETE)
     {
-        status = entropyEvent.getInfo<cl_int>(
+        status = ndrEvt.getInfo<cl_int>(
                      CL_EVENT_COMMAND_EXECUTION_STATUS,
                      &eventStatus);
         CHECK_OPENCL_ERROR(status,
@@ -500,7 +440,7 @@ LocalEntropy::runCLKernels()
     // Enqueue readBuffer
     cl::Event readEvt;
     status = commandQueue.enqueueReadImage(
-                outputImage2DEntropy,
+                 outputImage2D,
                  CL_FALSE,
                  origin,
                  region,
@@ -646,9 +586,140 @@ LocalEntropy::cleanup()
 }
 
 
+void
+LocalEntropy::LocalEntropyCPUReference()
+{
+    // x-axis gradient mask
+    const int kx[][3] =
+    {
+        { 1, 2, 1},
+        { 0, 0, 0},
+        { -1, -2, -1}
+    };
+
+    // y-axis gradient mask
+    const int ky[][3] =
+    {
+        { 1, 0, -1},
+        { 2, 0, -2},
+        { 1, 0, -1}
+    };
+
+    int gx = 0;
+    int gy = 0;
+
+    // pointer to input image data
+    cl_uchar *ptr = (cl_uchar*)malloc(width * height * pixelSize);
+    memcpy(ptr, inputImageData, width * height * pixelSize);
+
+    // each pixel has 4 uchar components
+    int w = width * 4;
+
+    int k = 1;
+
+    // apply filter on each pixel (except boundary pixels)
+    for(int i = 0; i < (int)(w * (height - 1)) ; i++)
+    {
+        if(i < (k + 1) * w - 4 && i >= 4 + k * w)
+        {
+            gx =  kx[0][0] **(ptr + i - 4 - w)
+                  + kx[0][1] **(ptr + i - w)
+                  + kx[0][2] **(ptr + i + 4 - w)
+                  + kx[1][0] **(ptr + i - 4)
+                  + kx[1][1] **(ptr + i)
+                  + kx[1][2] **(ptr + i + 4)
+                  + kx[2][0] **(ptr + i - 4 + w)
+                  + kx[2][1] **(ptr + i + w)
+                  + kx[2][2] **(ptr + i + 4 + w);
+
+            gy =  ky[0][0] **(ptr + i - 4 - w)
+                  + ky[0][1] **(ptr + i - w)
+                  + ky[0][2] **(ptr + i + 4 - w)
+                  + ky[1][0] **(ptr + i - 4)
+                  + ky[1][1] **(ptr + i)
+                  + ky[1][2] **(ptr + i + 4)
+                  + ky[2][0] **(ptr + i - 4 + w)
+                  + ky[2][1] **(ptr + i + w)
+                  + ky[2][2] **(ptr + i + 4 + w);
+
+            float gx2 = pow((float)gx, 2);
+            float gy2 = pow((float)gy, 2);
+
+            double temp = sqrt(gx2 + gy2) / 2.0;
+
+            // Saturate
+            if(temp > 255)
+            {
+                temp = 255;
+            }
+            if(temp < 0)
+            {
+                temp = 0;
+            }
+
+            *(verificationOutput + i) = (cl_uchar)(temp);
+        }
+
+        // if reached at the end of its row then incr k
+        if(i == (k + 1) * w - 5)
+        {
+            k++;
+        }
+    }
+    FREE(ptr);
+}
 
 
-///---------------------- NIE USUWAC -----------------------
+int
+LocalEntropy::verifyResults()
+{
+    if(!byteRWSupport)
+    {
+        return SDK_SUCCESS;
+    }
+
+    if(sampleArgs->verify)
+    {
+        // reference implementation
+        LocalEntropyCPUReference();
+
+        size_t size = width * height * sizeof(cl_uchar4);
+
+        cl_uchar4 *verificationData = (cl_uchar4*)malloc(size);
+        memcpy(verificationData, verificationOutput, size);
+
+        cl_uint error = 0;
+        for(cl_uint y = 0; y < height; y++)
+        {
+            for(cl_uint x = 0; x < width; x++)
+            {
+                int c = x + y * width;
+                // Only verify pixels inside the boundary
+                if((x >= 1 && x < (width - 1) && y >= 1 && y < (height - 1)))
+                {
+                    error += outputImageData[c].s[0]-verificationData[c].s[0];
+                }
+            }
+        }
+
+        // compare the results and see if they match
+        if(!error)
+        {
+            std::cout << "Passed!\n" << std::endl;
+            FREE(verificationData);
+            return SDK_SUCCESS;
+        }
+        else
+        {
+            std::cout << "Failed\n" << std::endl;
+            FREE(verificationData);
+            return SDK_FAILURE;
+        }
+    }
+
+    return SDK_SUCCESS;
+}
+
 void
 LocalEntropy::printStats()
 {
@@ -673,7 +744,6 @@ LocalEntropy::printStats()
         printStatistics(strArray, stats, 4);
     }
 }
-//-------------------------------------------------------------
 
 
 int
@@ -710,6 +780,11 @@ main(int argc, char * argv[])
             return SDK_FAILURE;
         }
 
+        // VerifyResults
+        if(clLocalEntropy.verifyResults() != SDK_SUCCESS)
+        {
+            return SDK_FAILURE;
+        }
 
         // Cleanup
         if(clLocalEntropy.cleanup() != SDK_SUCCESS)

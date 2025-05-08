@@ -18,7 +18,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #define SOBEL_FILTER_IMAGE_H_
 
 #define CL_USE_DEPRECATED_OPENCL_1_1_APIS
-#include <CL/cl.hpp>   
+#include <opencl.hpp>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -51,14 +51,11 @@ class LocalEntropy
         std::vector<cl::Device> devices;                /**< CL device list */
         std::vector<cl::Device> device;                 /**< CL device to be used */
         std::vector<cl::Platform> platforms;            /**< list of platforms */
-        cl::Image2D inputImage2DHist;                       /**< CL Input image2d */
-        cl::Image2D outputImage2DHist;                      /**< CL Output image2d */
-        cl::Image2D inputImage2DEntropy;                       /**< CL Input image2d */
-        cl::Image2D outputImage2DEntropy;                      /**< CL Output image2d */
+        cl::Image2D inputImage2D;                       /**< CL Input image2d */
+        cl::Image2D outputImage2D;                      /**< CL Output image2d */
         cl::CommandQueue commandQueue;                  /**< CL command queue */
         cl::Program program;                            /**< CL program  */
-        cl::Kernel histogramKernel;                     /**< Histogram Kernel */
-        cl::Kernel entropyKernel;                       /**< Entropy Kernel */
+        cl::Kernel kernel;                              /**< CL kernel */
 
         cl_uchar* verificationOutput;       /**< Output array for reference implementation */
 
@@ -186,6 +183,13 @@ class LocalEntropy
         * @return SDK_SUCCESS on success and SDK_FAILURE on failure
         */
         int cleanup();
+
+        /**
+        * Override from SDKSample
+        * Verify against reference implementation
+        * @return SDK_SUCCESS on success and SDK_FAILURE on failure
+        */
+        int verifyResults();
 };
 
 #endif // SOBEL_FILTER_IMAGE_H_
