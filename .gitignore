@@ -1,5 +1,6 @@
-ImageEntropy/build
-ImageEntropy/CMakeFiles
-ImageEntropy/CMakeCache.txt
-ImageEntropy/cmake_install.cmake
-ImageEntropy/Makefile
+LocalEntropy/build
+LocalEntropy/CMakeFiles
+LocalEntropy/CMakeCache.txt
+LocalEntropy/cmake_install.cmake
+LocalEntropy/Makefile
+
