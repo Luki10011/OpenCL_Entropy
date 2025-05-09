@@ -2,7 +2,7 @@ __constant sampler_t imageSampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CL
 
 /**
 * Convert image from RGB to grayscale
-* @param image2d_t inputImage - grayscale input image
+* @param image2d_t inputImage - RGB (or gray) input image
 * @param image2d_t outGrayImage - grayscale output image
 */
 __kernel void toGrayscale(__read_only image2d_t inputImage, __write_only image2d_t outGrayImage)
@@ -26,23 +26,35 @@ __kernel void toGrayscale(__read_only image2d_t inputImage, __write_only image2d
 			
 }
 
-
-__kernel void entropy(__read_only image2d_t inputGrayImage, __write_only image2d_t outputImage)
+/**
+* Compute image local entropy using given structure element mask
+* @param image2d_t inputGrayImage - grayscale input image
+* @param image2d_t outputImage - grayscale output image - local entropy
+* @param uchar* structElem - structure element as openCL buffer (2D mask flattened to 1D array)
+* @param int m - height (number of rows) of structure element
+* @param int n - width (number of cols) of structure element
+*/
+__kernel void entropy(__read_only image2d_t inputGrayImage, __write_only image2d_t outputImage, __global const uchar* structElem, const int m, const int n)
 {
 	int2 coord = (int2)(get_global_id(0), get_global_id(1));
-
-	const int size = 5;  // Neigborhood size - when 9 it is 9x9 square
-	const int struct_n = size * size;  // Num of pixels in structure element
 
 	uint localHist[256] = {0};
 	uint4 pixel = (uint4)(0);
 
+	size_t struct_n = 0;
+	size_t i = 0; size_t j = 0;
 	// Iterating over Neighborhood - Computing local histogram
-	for(int row = coord.x - (int)(size / 2.0f); row <= coord.x + (int)(size / 2.0f); ++row) {
-		for(int col = coord.y - (int)(size / 2.0f); col <= coord.y + (int)(size / 2.0f); ++col) {
-			pixel = read_imageui(inputGrayImage, imageSampler, (int2)(row, col));
-			localHist[(uint) pixel.x] += 1;
+	for(int row = coord.x - (int)(m / 2.0f); row <= coord.x + (int)(m / 2.0f); ++row) {
+		for(int col = coord.y - (int)(n / 2.0f); col <= coord.y + (int)(n / 2.0f); ++col) {
+			if (structElem[i * n + j]) {
+				pixel = read_imageui(inputGrayImage, imageSampler, (int2)(row, col));
+				localHist[(uint) pixel.x] += 1;
+				++struct_n;
+			}
+			++j;
 		}
+		++i;
+		j = 0;
 	}
 	
 	// Computing Entropy

@@ -83,7 +83,7 @@ class LocalEntropy
         int mStruct;                        /**< Number of structure element rows */
         int nStruct;                        /**< Number of structure element cols */
 
-        bool **structElem;                  /**< Structure element for local entropy filtration */
+        std::vector<cl_uchar> structElem;                  /**< Structure element for local entropy filtration flatten to 1D vector*/
 
         SDKTimer    *sampleTimer;      /**< SDKTimer object */
 
@@ -126,8 +126,8 @@ class LocalEntropy
             imageSupport = 0;
             inputName = INPUT_IMAGE;
             structShape = DEF_STRUCT;  // można zmienić na enum
-            mStruct = DEF_M;
-            nStruct = DEF_N;
+            mStruct = 0;
+            nStruct = 0;
         }
 
         ~LocalEntropy()

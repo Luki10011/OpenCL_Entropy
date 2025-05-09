@@ -462,7 +462,23 @@ LocalEntropy::runCLKernels()
     // outBuffer imager
     status = entropyKernel.setArg(1, outputImage2DEntropy);
     CHECK_OPENCL_ERROR(status, "Kernel::setArg() failed. (outputImageBuffer)");
+    
+    // structure element buffer
+    cl::Buffer structElemBuffer(
+        context,
+        CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
+        structElem.size() * sizeof(cl_uchar),
+        structElem.data()
+    );
 
+    status = entropyKernel.setArg(2, structElemBuffer);
+    CHECK_OPENCL_ERROR(status, "Kernel::setArg() failed. (structElemBuffer)");
+
+    status = entropyKernel.setArg(3, mStruct);
+    CHECK_OPENCL_ERROR(status, "Kernel::setArg() failed. (mStruct)");
+
+    status = entropyKernel.setArg(4, nStruct);
+    CHECK_OPENCL_ERROR(status, "Kernel::setArg() failed. (nStruct)");
 
     cl::Event entropyEvent;
     status = commandQueue.enqueueNDRangeKernel(
@@ -615,6 +631,49 @@ LocalEntropy::initialize()
     return SDK_SUCCESS;
 }
 
+/**
+* Generate structure element - m x n ellipse as 1D vector
+*/
+std::vector<cl_uchar> generateEllipse(int m, int n) {
+    std::vector<cl_uchar> mask(m * n, 0);
+
+    float a = (n-1) / 2.0f;              
+    float b = (m-1) / 2.0f;           
+    float x0 = a;
+    float y0 = b;
+
+    for (int y = 0; y < m; ++y) {
+        for (int x = 0; x < n; ++x) {
+            float dx = (x - x0) / a;
+            float dy = (y - y0) / b;
+            if (dx * dx + dy * dy <= 1.0f)
+                mask[y * n + x] = 1;
+        }
+    }
+
+    return mask;
+}
+
+/**
+* Generate structure element - m x n rectangle as 1D vector
+*/
+std::vector<cl_uchar> generateRectangle(int m, int n) {
+    return std::vector<cl_uchar>(m * n, 1);
+}
+
+/**
+* Function to flatten 2D mask to 1D vector - unused, but can be useful to process manually created structure elements
+*/
+std::vector<cl_uchar> flatten(const std::vector<std::vector<cl_uchar>>& mask) {
+    std::vector<cl_uchar> flatMask;
+    for (const auto& row : mask) {
+        flatMask.insert(flatMask.end(), row.begin(), row.end());
+    }
+    return flatMask;
+}
+
+
+
 int
 LocalEntropy::setup()
 {   
@@ -627,15 +686,53 @@ LocalEntropy::setup()
     }
 
     // Creating structure element
-    if (mStruct <= 0 && nStruct <= 0) {
-        std::cout << "Failed to create structure element. m and n must be positive." << std::endl;
-        return SDK_FAILURE;
-    }
+    // Setting m and n equal if one is not set
     if (mStruct <= 0 || nStruct <= 0) {
         mStruct = std::max(mStruct, nStruct);
         nStruct = std::max(mStruct, nStruct);
     }
 
+    // Short names of structure elements
+    if (structShape == "sq")
+        structShape = "square";
+    else if (structShape == "rec")
+        structShape = "rectangle";
+    else if (structShape == "c")
+        structShape = "circle";
+    else if (structShape == "e")
+        structShape = "ellipse";
+
+    // Setting m and n equal if circle or square
+    if (structShape == "square" || structShape == "circle") {
+        mStruct = std::max(mStruct, nStruct);
+        nStruct = std::max(mStruct, nStruct);
+    }
+
+    // m or n < 0
+    if (mStruct < 0 || nStruct < 0) {
+        std::cout << "Failed to create structure element. m and n must be positive." << std::endl;
+        return SDK_FAILURE;
+    }
+
+    // Setting default values if not set by user
+    if (mStruct == 0) {
+        // std::cout << "setting default value of m to " << std::to_string(DEF_M) << "." << std::endl;
+        mStruct = DEF_M;
+    }
+    if (nStruct == 0) {
+        // std::cout << "setting default value of n to " << std::to_string(DEF_N) << "." << std::endl;
+        nStruct = DEF_N;
+    }
+
+    // create structure element
+    if (structShape == "rectangle" || structShape == "square") {
+        structElem = generateEllipse(mStruct, nStruct);
+    } else if (structShape == "circle" || structShape == "ellipse") {
+        structElem = generateRectangle(mStruct, nStruct);
+    } else {
+        std::cout << "Failed to create structure element. Unknown structure element name." << std::endl;
+        return SDK_FAILURE;
+    }
 
     // create and initialize timers
     int timer = sampleTimer->createTimer();
@@ -674,6 +771,9 @@ LocalEntropy::run()
         }
 
     }
+
+    // Info for user
+    std::cout << "Generating local entropy output image for input " + inputName + ".bmp with " + std::to_string(mStruct) + "x" + std::to_string(nStruct) + " " + structShape + " structure element."  << std::endl;
 
     std::cout << "Executing kernel for " << iterations
               << " iterations" <<std::endl;

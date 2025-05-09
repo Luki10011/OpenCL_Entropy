@@ -4,3 +4,4 @@ LocalEntropy/cmake_install.cmake
 LocalEntropy/Makefile
 LocalEntropy/bin/**
 LocalEntropy/*build*/**
+.vscode
