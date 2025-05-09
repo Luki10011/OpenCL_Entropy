@@ -101,7 +101,7 @@ int
 LocalEntropy::genBinaryImage()
 {
     bifData binaryData;
-    binaryData.kernelName = std::string("LocalEntropy_Kernel.cl");
+    binaryData.kernelName = std::string("LocalEntropy_Kernels.cl");
     binaryData.flagsStr = std::string("");
     if(sampleArgs->isComplierFlagsSpecified())
     {
