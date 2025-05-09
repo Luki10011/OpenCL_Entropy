@@ -28,8 +28,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 #define SAMPLE_VERSION "AMD-APP-SDK-v3.0.130.1"
 
-#define INPUT_IMAGE "LocalEntropy_Input.bmp"
-#define OUTPUT_IMAGE "LocalEntropy_Output.bmp"
+#define INPUT_DIR "input/"  // Path to input images
+#define OUTPUT_DIR "output/"  // Path to generate output images
+#define INPUT_IMAGE "LocalEntropy_Input"
+#define OUTPUT_IMAGE "LocalEntropy_Output"
+#define DEF_STRUCT "square"
+#define DEF_M 5
+#define DEF_N 5
 
 #define GROUP_SIZE 256
 
@@ -73,6 +78,12 @@ class LocalEntropy
         size_t blockSizeY;                  /**< Work-group size in y-direction */
         int iterations;                     /**< Number of iterations for kernel execution */
         int imageSupport;
+        std::string inputName;              /**< Name of input image */
+        std::string structShape;            /**< Structure element shape */
+        int mStruct;                        /**< Number of structure element rows */
+        int nStruct;                        /**< Number of structure element cols */
+
+        bool **structElem;                  /**< Structure element for local entropy filtration */
 
         SDKTimer    *sampleTimer;      /**< SDKTimer object */
 
@@ -113,6 +124,10 @@ class LocalEntropy
             blockSizeY = 1;
             iterations = 1;
             imageSupport = 0;
+            inputName = INPUT_IMAGE;
+            structShape = DEF_STRUCT;  // można zmienić na enum
+            mStruct = DEF_M;
+            nStruct = DEF_N;
         }
 
         ~LocalEntropy()

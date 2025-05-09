@@ -1,7 +1,6 @@
-LocalEntropy/build
-LocalEntropy/CMakeFiles
+LocalEntropy/CMakeFiles/**
 LocalEntropy/CMakeCache.txt
 LocalEntropy/cmake_install.cmake
 LocalEntropy/Makefile
-LocalEntropy/bin
-
+LocalEntropy/bin/**
+LocalEntropy/*build*/**

@@ -82,7 +82,7 @@ LocalEntropy::readInputImage(std::string inputImageName)
 ///************************** NIE USUWAC *****************************
 int
 LocalEntropy::writeOutputImage(std::string outputImageName)
-{
+{   
     // copy output image data back to original pixel data
     memcpy(pixelData, outputImageData, width * height * pixelSize);
 
@@ -537,6 +537,7 @@ LocalEntropy::initialize()
     CHECK_ERROR(sampleArgs->initialize(), SDK_SUCCESS,
                 "OpenCL resource initialization failed");
 
+    // --iterations, -i
     Option* iteration_option = new Option;
     if(!iteration_option)
     {
@@ -550,18 +551,91 @@ LocalEntropy::initialize()
     iteration_option->_value = &iterations;
     sampleArgs->AddOption(iteration_option);
     delete iteration_option;
+
+    // --input
+    Option* input_option = new Option;
+    if(!input_option)
+    {
+        error("Memory Allocation error.\n");
+        return SDK_FAILURE;
+    }
+    input_option->_sVersion = "g";
+    input_option->_lVersion = "input";
+    input_option->_description = "Input image name in format <image_name> without file extension. Has to be .bmp type!\nDefault input name: " + std::string(INPUT_IMAGE) + ".";
+    input_option->_type = CA_ARG_STRING;
+    input_option->_value = &inputName;
+    sampleArgs->AddOption(input_option);
+    delete input_option;
+
+    // --struct_elem, -s
+    Option* struct_option = new Option;
+    if(!struct_option)
+    {
+        error("Memory Allocation error.\n");
+        return SDK_FAILURE;
+    }
+    struct_option->_sVersion = "s";
+    struct_option->_lVersion = "struct_elem";
+    struct_option->_description = "Structure element shape to perform filtration.\nAvailable shapes: \"circle\" (or \"c\"); \"elipse\" (or \"e\"); \"square\" (or \"sq\"); \"rectangle\" (or \"rec\")\nDefault structure element: " + std::string(DEF_STRUCT) + ".";
+    struct_option->_type = CA_ARG_STRING; 
+    struct_option->_value = &structShape;
+    sampleArgs->AddOption(struct_option);
+    delete struct_option;
+
+    // --struct_m, -m
+    Option* m_option = new Option;
+    if(!m_option)
+    {   
+        error("Memory Allocation error.\n");
+        return SDK_FAILURE;
+    }
+    m_option->_sVersion = "m";
+    m_option->_lVersion = "struct_m";
+    m_option->_description = "Height (number of rows) for structure element. Default: " + std::to_string(DEF_M) + ".";
+    m_option->_type = CA_ARG_INT;
+    m_option->_value = &mStruct;
+    sampleArgs->AddOption(m_option);
+    delete m_option;
+
+    // --struct_n, -n
+    Option* n_option = new Option;
+    if(!n_option)
+    {
+        error("Memory Allocation error.\n");
+        return SDK_FAILURE;
+    }
+    n_option->_sVersion = "n";
+    n_option->_lVersion = "struct_n";
+    n_option->_description = "Width (number of columns) for structure element. Default: " + std::to_string(DEF_N) + ".";
+    n_option->_type = CA_ARG_INT;
+    n_option->_value = &nStruct;
+    sampleArgs->AddOption(n_option);
+    delete n_option;
+
     return SDK_SUCCESS;
 }
 
 int
 LocalEntropy::setup()
-{
+{   
+
     // Allocate host memory and read input image
-    std::string filePath = getPath() + std::string(INPUT_IMAGE);
+    std::string filePath = getPath() + INPUT_DIR + inputName + ".bmp";
     if(readInputImage(filePath) != SDK_SUCCESS)
     {
         return SDK_FAILURE;
     }
+
+    // Creating structure element
+    if (mStruct <= 0 && nStruct <= 0) {
+        std::cout << "Failed to create structure element. m and n must be positive." << std::endl;
+        return SDK_FAILURE;
+    }
+    if (mStruct <= 0 || nStruct <= 0) {
+        mStruct = std::max(mStruct, nStruct);
+        nStruct = std::max(mStruct, nStruct);
+    }
+
 
     // create and initialize timers
     int timer = sampleTimer->createTimer();
@@ -625,7 +699,8 @@ LocalEntropy::run()
     kernelTime = (double)(sampleTimer->readTimer(timer)) / iterations;
 
     // write the output image to bitmap file
-    if(writeOutputImage(OUTPUT_IMAGE) != SDK_SUCCESS)
+
+    if(writeOutputImage(OUTPUT_DIR + ((INPUT_IMAGE == inputName) ? OUTPUT_IMAGE : (inputName + "_Output")) + "_" + structShape + std::to_string(mStruct) + "x" + std::to_string(nStruct) + ".bmp") != SDK_SUCCESS)
     {
         return SDK_FAILURE;
     }

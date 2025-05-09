@@ -17,7 +17,8 @@
 
 set( SAMPLE_NAME LocalEntropy )
 set( SOURCE_FILES LocalEntropy.cpp )
-set( EXTRA_FILES LocalEntropy_Kernels.cl LocalEntropy_Input.bmp )
+set( EXTRA_FILES LocalEntropy_Kernels.cl )
+set( INPUT_DIR input )
 
 ############################################################################
 
@@ -168,6 +169,14 @@ foreach( extra_file ${EXTRA_FILES} )
         ${CMAKE_CURRENT_SOURCE_DIR}/${extra_file}  ./
         )
 endforeach( extra_file )
+
+# Copy all contents of input/ folder to the binary output directory
+add_custom_command(
+    TARGET ${SAMPLE_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/${INPUT_DIR}
+        ${EXECUTABLE_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/${INPUT_DIR}
+)
 
 # Group sample based on FOLDER_GROUP defined in parent folder
 if( FOLDER_GROUP )

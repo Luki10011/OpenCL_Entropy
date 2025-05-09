@@ -9,7 +9,9 @@ In OpenCl project directory ie. `LocalEntropy`, perform operations listed below.
 
 Creating a Makefile
 ```
-cmake -G "Unix Makefiles"
+mkdir -p build
+cd build
+cmake .. -G "Unix Makefiles"
 ```
 Building application
 ```
@@ -19,10 +21,11 @@ In case of problems
 ```
 make clean
 make
+cd ..
 ```
-Run binary file
+Run binary file from `LocalEntropy` directory
 ```
-./bin/x86_64/Release/LocalEntropy
+./bin/x86_64/Release/LocalEntropy --input <input_image_name_without_extension> -s <struct_shape> -m <struct_height> -n <struct_width>
 ```
 
 
