@@ -18,7 +18,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include "LocalEntropy.hpp"
 #include <cmath>
 #include <algorithm>
-
+#include <chrono>
 
 
 ///************************** NIE USUWAC *****************************
@@ -741,6 +741,7 @@ LocalEntropy::setup()
     }
     if (input_type == "directory" && Alt_ImageName != "default"){
         inputName = Alt_ImageName;
+        is_dir = 1;
     }
     
     // Allocate host memory and read input image
@@ -937,6 +938,9 @@ LocalEntropy::printStats()
 int
 main(int argc, char * argv[])
 {
+
+    auto start = std::chrono::high_resolution_clock::now();
+
     std::string folder = getPath() + INPUT_DIR;
 
     std::string first_image = "default_initial";
@@ -949,12 +953,12 @@ main(int argc, char * argv[])
     else{
         first_image = files[0];
         //std::cout << "First image: " << first_image << std::endl;
-        std::cout << "Input images found:" << std::endl;
+        std::cout << "Input images found in input folder:" << std::endl;
         for (const auto& file : files) {
             std::cout << file << std::endl;
         }
         std::cout << "===========================" << std::endl;
-
+        int dir_flag = 1;
         for (const auto& file: files){
             // Main loop
             LocalEntropy clLocalEntropy(file);
@@ -987,9 +991,9 @@ main(int argc, char * argv[])
                     return SDK_FAILURE;
                 }
         
-                std::cout << "ended run" << std::endl;
+                //std::cout << "ended run" << std::endl;
         
-                std::cout << clLocalEntropy.getAltImgName() << std::endl;
+                //std::cout << clLocalEntropy.getAltImgName() << std::endl;
         
                 // Cleanup
                 if(clLocalEntropy.cleanup() != SDK_SUCCESS)
@@ -998,59 +1002,25 @@ main(int argc, char * argv[])
                 }
         
                 clLocalEntropy.printStats();
+
+                dir_flag = clLocalEntropy.get_is_dir();
+                if (dir_flag == 0){
+                    break;
+                }
             }
         
         }
-    }
+        if (dir_flag == 1){
+            std::cout << "All images processed." << std::endl;
 
+            auto end = std::chrono::high_resolution_clock::now();
 
-    LocalEntropy clLocalEntropy(first_image);
+            //calculate total time
+            auto duration_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+            std::cout << "Total execution time [entire main]: " << duration_ms.count() << " ms" << std::endl;
 
-    if(clLocalEntropy.initialize() != SDK_SUCCESS)
-    {
-        return SDK_FAILURE;
-    }
-
-    if(clLocalEntropy.sampleArgs->parseCommandLine(argc, argv))
-    {
-        return SDK_FAILURE;
-    }
-
-    if(clLocalEntropy.sampleArgs->isDumpBinaryEnabled())
-    {
-        return clLocalEntropy.genBinaryImage();
-    }
-    else
-    {   
-
-        // Setup
-        int status = clLocalEntropy.setup();
-        if(status != SDK_SUCCESS)
-        {
-            return status;
         }
-
-        // Run
-        if(clLocalEntropy.run() != SDK_SUCCESS)
-        {
-            return SDK_FAILURE;
-        }
-
-        std::cout << "ended run" << std::endl;
-
-        std::cout << clLocalEntropy.getAltImgName() << std::endl;
-
-        // Cleanup
-        if(clLocalEntropy.cleanup() != SDK_SUCCESS)
-        {
-            return SDK_FAILURE;
-        }
-
-        clLocalEntropy.printStats();
     }
-
-
-
 
 
     return SDK_SUCCESS;

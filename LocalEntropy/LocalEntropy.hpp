@@ -93,7 +93,7 @@ class LocalEntropy
         int nStruct;                        /**< Number of structure element cols */
         std::string Alt_ImageName;
         std::vector<cl_uchar> structElem;                  /**< Structure element for local entropy filtration flatten to 1D vector*/
-
+        int is_dir;                        /**< Flag to check if input is directory or image */
         SDKTimer    *sampleTimer;      /**< SDKTimer object */
 
     public:
@@ -138,6 +138,7 @@ class LocalEntropy
             mStruct = 0;
             nStruct = 0;
             Alt_ImageName = "default";
+            is_dir = 0;
         }
 
         LocalEntropy(std::string input_img_name)
@@ -160,6 +161,7 @@ class LocalEntropy
         mStruct = 0;
         nStruct = 0;
         Alt_ImageName = input_img_name;
+        is_dir = 0;
     }
 
         ~LocalEntropy()
@@ -251,6 +253,10 @@ class LocalEntropy
 
         std::string getAltImgName(){
             return Alt_ImageName;
+        }
+
+        int get_is_dir(){
+            return is_dir;
         }
 
 
