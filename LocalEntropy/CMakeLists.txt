@@ -19,11 +19,15 @@ set( SAMPLE_NAME LocalEntropy )
 set( SOURCE_FILES LocalEntropy.cpp )
 set( EXTRA_FILES LocalEntropy_Kernels.cl )
 set( INPUT_DIR input )
+set( OUTPUT_DIR output )
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 ############################################################################
 
 set(CMAKE_SUPPRESS_REGENERATION TRUE)
-cmake_minimum_required( VERSION 2.8.0 )
+cmake_minimum_required( VERSION 3.5.0 )
+
 project( ${SAMPLE_NAME} )
 
 if(CMAKE_BUILD_TYPE MATCHES "[Tt][Bb][Bb]")
@@ -176,6 +180,13 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_CURRENT_SOURCE_DIR}/${INPUT_DIR}
         ${EXECUTABLE_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/${INPUT_DIR}
+)
+
+add_custom_command(
+    TARGET ${SAMPLE_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/${OUTPUT_DIR}
+        ${EXECUTABLE_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/${OUTPUT_DIR}
 )
 
 # Group sample based on FOLDER_GROUP defined in parent folder

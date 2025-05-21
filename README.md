@@ -25,7 +25,9 @@ cd ..
 ```
 Run binary file from `LocalEntropy` directory
 ```
-./bin/x86_64/Release/LocalEntropy --input <input_image_name_without_extension> -s <struct_shape> -m <struct_height> -n <struct_width>
+./bin/x86_64/Release/LocalEntropy --input <input_image_name_without_extension> -f <d/i> -s <struct_shape> -m <struct_height> -n <struct_width>
+
+note: -f (folder) arguement is responsible for handling reading of every image from input folder (if d is selected)
 ```
 
 

@@ -26,6 +26,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include "CLUtil.hpp"
 #include "SDKBitMap.hpp"
 
+#include <iostream>
+#include <vector>
+#include <filesystem>
+namespace fs = std::filesystem;
+
+
 #define SAMPLE_VERSION "AMD-APP-SDK-v3.0.130.1"
 
 #define INPUT_DIR "input/"  // Path to input images
@@ -44,6 +50,8 @@ using namespace appsdk;
 * LocalEntropy
 * Class implements OpenCL Sobel Filter sample using Images
 */
+
+std::vector<std::string> findBmpFiles(const std::string& folderPath);
 
 class LocalEntropy
 {
@@ -80,9 +88,10 @@ class LocalEntropy
         int imageSupport;
         std::string inputName;              /**< Name of input image */
         std::string structShape;            /**< Structure element shape */
+        std::string input_type;            /**< Input type [directory or image]*/
         int mStruct;                        /**< Number of structure element rows */
         int nStruct;                        /**< Number of structure element cols */
-
+        std::string Alt_ImageName;
         std::vector<cl_uchar> structElem;                  /**< Structure element for local entropy filtration flatten to 1D vector*/
 
         SDKTimer    *sampleTimer;      /**< SDKTimer object */
@@ -106,7 +115,7 @@ class LocalEntropy
         int writeOutputImage(std::string outputImageName);
 
         /**
-        * Constructor
+        * Constructor (s)
         * Initialize member variables
         */
         LocalEntropy()
@@ -128,7 +137,30 @@ class LocalEntropy
             structShape = DEF_STRUCT;  // można zmienić na enum
             mStruct = 0;
             nStruct = 0;
+            Alt_ImageName = "default";
         }
+
+        LocalEntropy(std::string input_img_name)
+        : inputImageData(NULL),
+          outputImageData(NULL),
+          verificationOutput(NULL),
+          byteRWSupport(true)
+    {
+        sampleArgs = new CLCommandArgs();
+        sampleTimer = new SDKTimer();
+        sampleArgs->sampleVerStr = SAMPLE_VERSION;
+        pixelSize = sizeof(uchar4);
+        pixelData = NULL;
+        blockSizeX = GROUP_SIZE;
+        blockSizeY = 1;
+        iterations = 1;
+        imageSupport = 0;
+        inputName = INPUT_IMAGE;
+        structShape = DEF_STRUCT;  // można zmienić na enum
+        mStruct = 0;
+        nStruct = 0;
+        Alt_ImageName = input_img_name;
+    }
 
         ~LocalEntropy()
         {
@@ -139,6 +171,18 @@ class LocalEntropy
         * @return SDK_SUCCESS on success and SDK_FAILURE on failure
         */
         int setupLocalEntropy();
+
+        std::string getInputName(){
+            return inputName;
+        }
+
+        std::string getInputType(){
+            return input_type;
+        }
+
+        void setInputName(std::string name){
+            inputName = name;
+        }
 
         /**
          * Override from SDKSample, Generate binary image of given kernel
@@ -188,6 +232,9 @@ class LocalEntropy
         */
         int setup();
 
+
+        int readInputImage_wrapper();
+
         /**
         * Override from SDKSample
         * Run OpenCL Sobel Filter
@@ -201,6 +248,12 @@ class LocalEntropy
         * @return SDK_SUCCESS on success and SDK_FAILURE on failure
         */
         int cleanup();
+
+        std::string getAltImgName(){
+            return Alt_ImageName;
+        }
+
+
 };
 
 #endif // SOBEL_FILTER_IMAGE_H_

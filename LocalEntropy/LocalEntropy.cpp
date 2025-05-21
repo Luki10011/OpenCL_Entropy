@@ -17,6 +17,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 #include "LocalEntropy.hpp"
 #include <cmath>
+#include <algorithm>
+
+
 
 ///************************** NIE USUWAC *****************************
 int
@@ -30,6 +33,10 @@ LocalEntropy::readInputImage(std::string inputImageName)
     {
         std::cout << "Failed to load input image!" << std::endl;
         return SDK_FAILURE;
+    }
+    else
+    {
+        std::cout << "Loaded input image: " << inputImageName << std::endl;
     }
 
     // get width and height of input image
@@ -90,6 +97,8 @@ LocalEntropy::writeOutputImage(std::string outputImageName)
     if(!inputBitmap.write(outputImageName.c_str()))
     {
         std::cout << "Failed to write output image!" << std::endl;
+
+        std::cout << OUTPUT_DIR << std::endl;
         return SDK_FAILURE;
     }
 
@@ -111,6 +120,22 @@ LocalEntropy::genBinaryImage()
     binaryData.binaryName = std::string(sampleArgs->dumpBinary.c_str());
     int status = generateBinaryImage(binaryData);
     return status;
+}
+
+std::vector<std::string> findBmpFiles(const std::string& folderPath){
+    std::vector<std::string> bmpFiles;
+
+    try {
+        for (const auto& entry : fs::directory_iterator(folderPath)) {
+            if (entry.is_regular_file() && entry.path().extension() == ".bmp") {
+                bmpFiles.push_back(entry.path().stem().string());
+            }
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Error reading directory: " << e.what() << std::endl;
+    }
+
+    return bmpFiles;
 }
 
 
@@ -583,6 +608,21 @@ LocalEntropy::initialize()
     sampleArgs->AddOption(input_option);
     delete input_option;
 
+    // image or folder
+    Option* image_option = new Option;
+    if(!image_option)
+    {
+        error("Memory Allocation error.\n");
+        return SDK_FAILURE;
+    }
+    image_option->_sVersion = "f";
+    image_option->_lVersion = "folder";
+    image_option->_description = "Input image folder name. If not set, input image is expected to be in the same folder as the executable.\nDefault input folder: " + std::string(INPUT_DIR) + ".";
+    image_option->_type = CA_ARG_STRING;
+    image_option->_value = &input_type;
+    sampleArgs->AddOption(image_option);
+    delete image_option;
+
     // --struct_elem, -s
     Option* struct_option = new Option;
     if(!struct_option)
@@ -628,6 +668,7 @@ LocalEntropy::initialize()
     sampleArgs->AddOption(n_option);
     delete n_option;
 
+
     return SDK_SUCCESS;
 }
 
@@ -672,12 +713,36 @@ std::vector<cl_uchar> flatten(const std::vector<std::vector<cl_uchar>>& mask) {
     return flatMask;
 }
 
+int LocalEntropy::readInputImage_wrapper(){
+    // Allocate host memory and read input image
 
+    // Allocate host memory and read input image
+    std::string filePath = getPath() + INPUT_DIR + inputName + ".bmp";
+    if(readInputImage(filePath) != SDK_SUCCESS)
+    {
+        return SDK_FAILURE;
+    }
+
+}
 
 int
 LocalEntropy::setup()
 {   
-
+    //Short names of folder settings
+    if (input_type == "d"){
+        input_type = "directory";
+    }
+    else if (input_type == "i"){
+        input_type = "image";
+    }
+    else{
+        std::cout << "Unknown input type [available image/directory]. Defaulting to image." << std::endl;
+        input_type = "image";
+    }
+    if (input_type == "directory" && Alt_ImageName != "default"){
+        inputName = Alt_ImageName;
+    }
+    
     // Allocate host memory and read input image
     std::string filePath = getPath() + INPUT_DIR + inputName + ".bmp";
     if(readInputImage(filePath) != SDK_SUCCESS)
@@ -688,9 +753,16 @@ LocalEntropy::setup()
     // Creating structure element
     // Setting m and n equal if one is not set
     if (mStruct <= 0 || nStruct <= 0) {
-        mStruct = std::max(mStruct, nStruct);
-        nStruct = std::max(mStruct, nStruct);
+        if (mStruct >= nStruct){
+            nStruct = mStruct;
+        } else {
+            mStruct = nStruct;
+        }
     }
+
+     
+
+
 
     // Short names of structure elements
     if (structShape == "sq")
@@ -704,8 +776,11 @@ LocalEntropy::setup()
 
     // Setting m and n equal if circle or square
     if (structShape == "square" || structShape == "circle") {
-        mStruct = std::max(mStruct, nStruct);
-        nStruct = std::max(mStruct, nStruct);
+        if (mStruct >= nStruct){
+            nStruct = mStruct;
+        } else {
+            mStruct = nStruct;
+        }
     }
 
     // m or n < 0
@@ -756,6 +831,13 @@ LocalEntropy::setup()
 int
 LocalEntropy::run()
 {
+    
+    //if (inputFolder == "folder"){
+    //    inputFolder = getPath() + INPUT_DIR;
+    //} else {
+    //   inputFolder = getPath() + inputFolder;
+    //}
+
     if(!byteRWSupport)
     {
         return SDK_SUCCESS;
@@ -817,6 +899,7 @@ LocalEntropy::cleanup()
     FREE(outputImageData);
     FREE(verificationOutput);
 
+
     return SDK_SUCCESS;
 }
 
@@ -854,7 +937,74 @@ LocalEntropy::printStats()
 int
 main(int argc, char * argv[])
 {
-    LocalEntropy clLocalEntropy;
+    std::string folder = getPath() + INPUT_DIR;
+
+    std::string first_image = "default_initial";
+
+    auto files = findBmpFiles(folder);
+    if (files.empty()){
+        std::cout << "No .bmp files found in the folder: " << folder << std::endl;
+        return SDK_FAILURE;
+    }
+    else{
+        first_image = files[0];
+        //std::cout << "First image: " << first_image << std::endl;
+        std::cout << "Input images found:" << std::endl;
+        for (const auto& file : files) {
+            std::cout << file << std::endl;
+        }
+        std::cout << "===========================" << std::endl;
+
+        for (const auto& file: files){
+            // Main loop
+            LocalEntropy clLocalEntropy(file);
+            if(clLocalEntropy.initialize() != SDK_SUCCESS)
+            {
+                return SDK_FAILURE;
+            }
+            if(clLocalEntropy.sampleArgs->parseCommandLine(argc, argv))
+            {
+                return SDK_FAILURE;
+            }
+        
+            if(clLocalEntropy.sampleArgs->isDumpBinaryEnabled())
+            {
+                return clLocalEntropy.genBinaryImage();
+            }
+            else
+            {   
+        
+                // Setup
+                int status = clLocalEntropy.setup();
+                if(status != SDK_SUCCESS)
+                {
+                    return status;
+                }
+        
+                // Run
+                if(clLocalEntropy.run() != SDK_SUCCESS)
+                {
+                    return SDK_FAILURE;
+                }
+        
+                std::cout << "ended run" << std::endl;
+        
+                std::cout << clLocalEntropy.getAltImgName() << std::endl;
+        
+                // Cleanup
+                if(clLocalEntropy.cleanup() != SDK_SUCCESS)
+                {
+                    return SDK_FAILURE;
+                }
+        
+                clLocalEntropy.printStats();
+            }
+        
+        }
+    }
+
+
+    LocalEntropy clLocalEntropy(first_image);
 
     if(clLocalEntropy.initialize() != SDK_SUCCESS)
     {
@@ -871,7 +1021,8 @@ main(int argc, char * argv[])
         return clLocalEntropy.genBinaryImage();
     }
     else
-    {
+    {   
+
         // Setup
         int status = clLocalEntropy.setup();
         if(status != SDK_SUCCESS)
@@ -885,6 +1036,9 @@ main(int argc, char * argv[])
             return SDK_FAILURE;
         }
 
+        std::cout << "ended run" << std::endl;
+
+        std::cout << clLocalEntropy.getAltImgName() << std::endl;
 
         // Cleanup
         if(clLocalEntropy.cleanup() != SDK_SUCCESS)
@@ -895,7 +1049,12 @@ main(int argc, char * argv[])
         clLocalEntropy.printStats();
     }
 
+
+
+
+
     return SDK_SUCCESS;
+
 }
 
 
