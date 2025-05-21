@@ -198,18 +198,21 @@ LocalEntropy::setupCL()
 
     devices = context.getInfo<CL_CONTEXT_DEVICES>(&err);
     CHECK_OPENCL_ERROR(err, "Context::getInfo() failed.");
-
-    std::cout << "Platform :" << (*i).getInfo<CL_PLATFORM_VENDOR>().c_str() << "\n";
+    if (print_flag == 1){
+        std::cout << "Platform :" << (*i).getInfo<CL_PLATFORM_VENDOR>().c_str() << "\n";
+    }
     int deviceCount = (int)devices.size();
     int j = 0;
-    for (std::vector<cl::Device>::iterator i = devices.begin(); i != devices.end();
-            ++i, ++j)
-    {
-        std::cout << "Device " << j << " : ";
-        std::string deviceName = (*i).getInfo<CL_DEVICE_NAME>();
-        std::cout << deviceName.c_str() << "\n";
-    }
-    std::cout << "\n";
+    if (print_flag == 1){
+        for (std::vector<cl::Device>::iterator i = devices.begin(); i != devices.end();
+        ++i, ++j)
+        {
+            std::cout << "Device " << j << " : ";
+            std::string deviceName = (*i).getInfo<CL_DEVICE_NAME>();
+            std::cout << deviceName.c_str() << "\n";
+        }
+        std::cout << "\n";
+        }
 
     if (deviceCount == 0)
     {
@@ -931,6 +934,9 @@ LocalEntropy::printStats()
 
         printStatistics(strArray, stats, 4);
     }
+    sampleTimer->totalTime = setupTime + kernelTime;
+    totalKernelTime_inSeconds = float(kernelTime);
+    totalTime_inSeconds = float(sampleTimer->totalTime);
 }
 //-------------------------------------------------------------
 
@@ -959,9 +965,17 @@ main(int argc, char * argv[])
         }
         std::cout << "===========================" << std::endl;
         int dir_flag = 1;
+        int counter = 0;
+        float totalTime_inSeconds = 0;
+        float totalKernelTime_inSeconds = 0;
         for (const auto& file: files){
             // Main loop
-            LocalEntropy clLocalEntropy(file);
+            int print_flag = 1;
+            if(counter > 0){
+                print_flag = 0;
+            }
+            counter = counter + 1;
+            LocalEntropy clLocalEntropy(file, print_flag);
             if(clLocalEntropy.initialize() != SDK_SUCCESS)
             {
                 return SDK_FAILURE;
@@ -1003,7 +1017,12 @@ main(int argc, char * argv[])
         
                 clLocalEntropy.printStats();
 
+
+
                 dir_flag = clLocalEntropy.get_is_dir();
+
+                totalTime_inSeconds = totalTime_inSeconds + clLocalEntropy.getTotalTime();
+                totalKernelTime_inSeconds = totalKernelTime_inSeconds + clLocalEntropy.getTotalKernelTime();
                 if (dir_flag == 0){
                     break;
                 }
@@ -1018,6 +1037,9 @@ main(int argc, char * argv[])
             //calculate total time
             auto duration_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
             std::cout << "Total execution time [entire main]: " << duration_ms.count() << " ms" << std::endl;
+
+            std::cout << "Total execution time [kernel]: " << std::setprecision(6) << totalKernelTime_inSeconds << " s" << std::endl;
+            std::cout << "Total execution time [setup+kernel]: " << std::setprecision(6) << totalTime_inSeconds << " s" << std::endl;
 
         }
     }

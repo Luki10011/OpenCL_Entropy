@@ -94,7 +94,10 @@ class LocalEntropy
         std::string Alt_ImageName;
         std::vector<cl_uchar> structElem;                  /**< Structure element for local entropy filtration flatten to 1D vector*/
         int is_dir;                        /**< Flag to check if input is directory or image */
+        int print_flag;
         SDKTimer    *sampleTimer;      /**< SDKTimer object */
+        float totalTime_inSeconds; /**< Setup time + kernel time */
+        float totalKernelTime_inSeconds; /**< Total time taken for kernel execution */
 
     public:
 
@@ -139,9 +142,12 @@ class LocalEntropy
             nStruct = 0;
             Alt_ImageName = "default";
             is_dir = 0;
+            print_flag = 1;
+            totalTime_inSeconds = 0;
+            totalKernelTime_inSeconds = 0;
         }
 
-        LocalEntropy(std::string input_img_name)
+        LocalEntropy(std::string input_img_name, int print_flag)
         : inputImageData(NULL),
           outputImageData(NULL),
           verificationOutput(NULL),
@@ -162,6 +168,9 @@ class LocalEntropy
         nStruct = 0;
         Alt_ImageName = input_img_name;
         is_dir = 0;
+        print_flag = print_flag;
+        totalTime_inSeconds = 0;
+        totalKernelTime_inSeconds = 0;
     }
 
         ~LocalEntropy()
@@ -257,6 +266,14 @@ class LocalEntropy
 
         int get_is_dir(){
             return is_dir;
+        }
+
+        float getTotalTime(){
+            return totalTime_inSeconds;
+        }
+
+        float getTotalKernelTime(){
+            return totalKernelTime_inSeconds;
         }
 
 
