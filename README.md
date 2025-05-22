@@ -32,7 +32,14 @@ note: -f (folder) arguement is responsible for handling reading of every image f
 
 
 ## Windows
-Łukasz, dopisałbyś byś tu te komendy których ty używasz?
+You need to run this commands in roder to build project on windows
+```
+mkdir build
+cd build
+cmake -G "MinGW Makefiles" ..
+mingw32-make
+
+```
 
 # Requirements
 Do poprawy i uzupełnienia - dodałem tak orientacyjnie, żeby nie zapomnieć potem - Roman
