@@ -21,7 +21,21 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include <chrono>
 
 
-///************************** NIE USUWAC *****************************
+/**
+ * @brief Wczytuje obraz wejściowy i przygotowuje dane do przetwarzania.
+ *
+ * Ładuje bitmapę z podanej ścieżki, sprawdza poprawność wczytania,
+ * inicjalizuje bufor wejściowy i wyjściowy - dynamicznie alokuje dla nich pamieć.
+ * W przypadku błędów w alokacji pamięci lub wczytywaniu obrazu,
+ * funkcja wypisuje komunikat i zwraca kod błędu.
+ *
+ * @param inputImageName Ścieżka do obrazu wejściowego - pliku w typie .bmp.
+ * @return SDK_SUCCESS (0) jeśli operacja zakończyła się sukcesem,
+ *         SDK_FAILURE (1) w przypadku błędu.
+ *
+ * @note Funkcja w całości pochodzi z przykładowej aplikacji pakietu AMD SDK
+ * @warning Funkcja dynamicznie alokuje pamięć, ale nie zwalnia jej - należy o tym pamiętać
+ */
 int
 LocalEntropy::readInputImage(std::string inputImageName)
 {
@@ -83,10 +97,19 @@ LocalEntropy::readInputImage(std::string inputImageName)
     return SDK_SUCCESS;
 
 }
-///*******************************************************************
 
-
-///************************** NIE USUWAC *****************************
+/**
+ * @brief Zapisuje dane wyjściowego obrazu do pliku .bmp.
+ *
+ * Kopiuje dane z bufora wyjściowego do bufora pikseli i zapisuje dane do pliku .bmp o podanej nazwie.
+ * Jeśli operacja zapisu się nie powiedzie, wypisywany jest komunikat błędu, a funkcja zwraca kod błędu.
+ *
+ * @param outputImageName Ścieżka pliku .bmp do zapisania danych.
+ * @return SDK_SUCCESS (0) jeśli zapis się powiódł,
+ *         SDK_FAILURE (1) w przypadku niepowodzenia.
+ *
+ * @note Funkcja w całości pochodzi z przykładowej aplikacji pakietu AMD SDK.
+ */
 int
 LocalEntropy::writeOutputImage(std::string outputImageName)
 {   
@@ -104,8 +127,18 @@ LocalEntropy::writeOutputImage(std::string outputImageName)
 
     return SDK_SUCCESS;
 }
-///*******************************************************************
 
+/**
+ * @brief Generuje plik binarny z kodem kernela OpenCL.
+ *
+ * Tworzy strukturę z informacjami o pliku jądra, opcjach kompilatora i nazwie wyjściowego
+ * pliku binarnego, a następnie kompiluje kod OpenCL do postaci binarnej.
+ *
+ * @return SDK_SUCCESS (0) jeśli operacja się powiodła,
+ *         SDK_FAILURE (1) w przypadku niepowodzenia.
+ *
+ * @note Funkcja w całości pochodzi z przykładowej aplikacji pakietu AMD SDK.
+ */
 int
 LocalEntropy::genBinaryImage()
 {
@@ -122,6 +155,14 @@ LocalEntropy::genBinaryImage()
     return status;
 }
 
+/**
+ * @brief Wyszukuje pliki BMP w podanym folderze.
+ *
+ * Przeszukuje katalog i zwraca nazwy plików .bmp (bez rozszerzenia).
+ *
+ * @param folderPath Ścieżka do katalogu.
+ * @return Lista nazw plików BMP.
+ */
 std::vector<std::string> findBmpFiles(const std::string& folderPath){
     std::vector<std::string> bmpFiles;
 
@@ -138,7 +179,17 @@ std::vector<std::string> findBmpFiles(const std::string& folderPath){
     return bmpFiles;
 }
 
-
+/**
+ * @brief Inicjalizuje środowisko OpenCL.
+ *
+ * Wybiera platformę i urządzenie (CPU lub GPU), tworzy konteksty, kolejkę poleceń
+ * oraz obrazy i bufory pamięci dla programu. Wczytuje i kompiluje pliki kerneli OpenCL. W razie potrzeby wyświetla informacje o błędach.
+ *
+ * @return SDK_SUCCESS (0) w przypadku powodzenia,
+ *         SDK_FAILURE (1) w przypadku błędu inicjalizacji.
+ *
+ * @note Funkcja została napisana na podstawie analogicznej funkcji z przykładowej aplikacji pakietu AMD SDK.
+ */
 int
 LocalEntropy::setupCL()
 {
@@ -409,6 +460,21 @@ LocalEntropy::setupCL()
     return SDK_SUCCESS;
 }
 
+/**
+ * @brief Uruchamia kernele OpenCL do przetwarzania obrazu.
+ *
+ * Funkcja wykonuje następujące kroki:
+ * - Kopiuje dane wejściowe do bufora obrazu w pamięci urządzenia.
+ * - Uruchamia kernel konwertujące obraz do skali szarości.
+ * - Uruchamia kernel obliczające lokalną entropię na podstawie przetworzonego obrazu.
+ * - Odczytuje wynikowe dane obrazu z powrotem do pamięci hosta (komputera, na którym działa program).
+ *
+ * @return SDK_SUCCESS (0) w przypadku powodzenia,
+ *         SDK_FAILURE (1) w przypadku błędu wykonania.
+ *
+ * @note Funkcja wymaga poprawnej konfiguracji kontekstu i kernelów (np. przez setupCL()).
+ *       Funkcja została napisana na podstawie analogicznej funkcji z przykładowej aplikacji pakietu AMD SDK.
+ */
 int
 LocalEntropy::runCLKernels()
 {
@@ -579,7 +645,16 @@ LocalEntropy::runCLKernels()
 }
 
 
-
+/**
+ * @brief Inicjalizuje opcje programu.
+ * 
+ * Ustawia domyślne wartości i rejestruje argumenty linii poleceń.
+ * 
+ * @return SDK_SUCCESS (0) w przypadku powodzenia,
+ *         SDK_FAILURE (1) w przypadku błędu wykonania.
+ * 
+ * @note Funkcja została napisana na podstawie analogicznej funkcji z przykładowej aplikacji pakietu AMD SDK.
+ */
 int
 LocalEntropy::initialize()
 {
@@ -682,8 +757,15 @@ LocalEntropy::initialize()
 }
 
 /**
-* Generate structure element - m x n ellipse as 1D vector
-*/
+ * @brief Generuje maskę elipsy o zadanych wymiarach, jako jednowymiarowy wektor.
+ * 
+ * Tworzy maskę elipsy wpisanej w prostokąt o wymiarach m (wysokość) x n (szerokość).
+ * Maska jest reprezentowana jako wektor bajtów (0 lub 1), gdzie 1 oznacza piksele należące do elipsy.
+ * 
+ * @param m Liczba wierszy (wysokość maski).
+ * @param n Liczba kolumn (szerokość maski).
+ * @return Wektor zawierający maskę elipsy.
+ */
 std::vector<cl_uchar> generateEllipse(int m, int n) {
     std::vector<cl_uchar> mask(m * n, 0);
 
@@ -705,15 +787,30 @@ std::vector<cl_uchar> generateEllipse(int m, int n) {
 }
 
 /**
-* Generate structure element - m x n rectangle as 1D vector
-*/
+ * @brief Generuje maskę prostokąta o zadanych wymiarach, jako jednowymiarowy wektor.
+ * 
+ * Tworzy maskę prostokąta o wymiarach m (wysokość) x n (szerokość).
+ * Maska jest reprezentowana jako wektor bajtów - jedynek oznaczających piksele należące do prostokąta.
+ * 
+ * @param m Liczba wierszy (wysokość maski).
+ * @param n Liczba kolumn (szerokość maski).
+ * @return Wektor zawierający maskę elipsy.
+ */
 std::vector<cl_uchar> generateRectangle(int m, int n) {
     return std::vector<cl_uchar>(m * n, 1);
 }
 
 /**
-* Function to flatten 2D mask to 1D vector - unused, but can be useful to process manually created structure elements
-*/
+ * @brief Spłaszcza dwuwymiarowy wektor bajtów do jednowymiarowego.
+ * 
+ * Funkcja przekształca maskę zapisaną jako dwuwymiarowy wektor na jednowymiarowy,
+ * przez dołączenie kolejnych wierszy jeden po drugim.
+ * 
+ * @param mask Dwuwymiarowy wektor bajtów do spłaszczenia.
+ * @return Jednowymiarowy wektor zawierający spłaszczone dane maski.
+ * @note Funkcja nie jest używana w obecnej wersji programu, jednak może być przydatna
+ * do rozszerzenia funkcjonalnosći o niestandardowe elementy strukturalne.
+ */
 std::vector<cl_uchar> flatten(const std::vector<std::vector<cl_uchar>>& mask) {
     std::vector<cl_uchar> flatMask;
     for (const auto& row : mask) {
@@ -734,6 +831,18 @@ int LocalEntropy::readInputImage_wrapper(){
 
 }
 
+/**
+ * @brief Konfiguruje środowisko przed uruchomieniem obliczeń.
+ * 
+ * Przetwarza parametry wejściowe, nazwa pliku wejściowego, rozmiary elementu 
+ * strukturalnego oraz jego kształt (szczegóły dostępne po uruchomieniu programu z opcją --help).
+ * Następnie wczytuje obraz wejściowy, tworzy element strukturalny zgodnie z ustawieniami
+ * oraz inicjalizuje OpenCL i timery do pomaru czasu wykonywania się programu.
+ * 
+ * @return SDK_SUCCESS w przypadku powodzenia,
+ *         SDK_FAILURE w przypadku błędów
+ * @note Funkcja została napisana na podstawie analogicznej funkcji z przykładowej aplikacji pakietu AMD SDK.
+ */
 int
 LocalEntropy::setup()
 {   
@@ -838,6 +947,16 @@ LocalEntropy::setup()
 
 }
 
+/**
+ * @brief Uruchamia obliczenia lokalnej entropii dla obrazu wejściowego.
+ * 
+ * Uruchamia kernel OpenCL przez zadaną liczbę iteracji oraz zapisuje wynikowy obraz do pliku. 
+ * Mierzy też czas wykonania kernela.
+ * 
+ * @return SDK_SUCCESS w przypadku sukcesu,
+ *         SDK_FAILURE w razie błędu
+ * @note Funkcja została napisana na podstawie analogicznej funkcji z przykładowej aplikacji pakietu AMD SDK.
+ */
 int
 LocalEntropy::run()
 {
@@ -900,6 +1019,12 @@ LocalEntropy::run()
     return SDK_SUCCESS;
 }
 
+/**
+ * @brief Zwalnia zaalokowane zasoby programu.
+ * 
+ * @return int Zwraca SDK_SUCCESS po poprawnym zwolnieniu zasobów.
+ * @note Funkcja w całości pochodzi z przykładowej aplikacji pakietu AMD SDK.
+ */
 int
 LocalEntropy::cleanup()
 {
@@ -913,10 +1038,13 @@ LocalEntropy::cleanup()
     return SDK_SUCCESS;
 }
 
-
-
-
-///---------------------- NIE USUWAC -----------------------
+/**
+ * @brief Wyświetla statystyki czasowe wykonania programu.
+ * 
+ * Jeśli aktywne są pomiary czasu, wypisywane są: szerokość i wysokość obrazu,
+ * całkowity czas wykonania oraz czas działania jądra OpenCL.
+ * @note Funkcja w całości pochodzi z przykładowej aplikacji pakietu AMD SDK.
+ */
 void
 LocalEntropy::printStats()
 {
@@ -944,8 +1072,6 @@ LocalEntropy::printStats()
     totalKernelTime_inSeconds = float(kernelTime);
     totalTime_inSeconds = float(sampleTimer->totalTime);
 }
-//-------------------------------------------------------------
-
 
 int
 main(int argc, char * argv[])

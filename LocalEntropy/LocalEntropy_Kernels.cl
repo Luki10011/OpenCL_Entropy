@@ -1,12 +1,11 @@
-// __constant sampler_t imageSampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP | CLK_FILTER_LINEAR;
 __constant sampler_t imageSampler = CLK_NORMALIZED_COORDS_FALSE |
                                     CLK_ADDRESS_NONE |
                                     CLK_FILTER_NEAREST;
 
 /**
-* Convert image from RGB to grayscale
-* @param image2d_t inputImage - RGB (or gray) input image
-* @param image2d_t outGrayImage - grayscale output image
+* @brief Konwersja obrazu z RGB do skali szarości
+* @param inputImage - obraz wejściowy RGB (lub w skali szarości)
+* @param outGrayImage - obraz wyjściowy w skali szarości
 */
 __kernel void toGrayscale(__read_only image2d_t inputImage, __write_only image2d_t outGrayImage)
 {
@@ -30,13 +29,14 @@ __kernel void toGrayscale(__read_only image2d_t inputImage, __write_only image2d
 }
 
 /**
-* Compute image local entropy using given structure element mask
-* @param image2d_t inputGrayImage - grayscale input image
-* @param image2d_t outputImage - grayscale output image - local entropy
-* @param uchar* structElem - structure element as openCL buffer (2D mask flattened to 1D array)
-* @param int m - height (number of rows) of structure element
-* @param int n - width (number of cols) of structure element
-* @param char structLetter - first letter of structure element name - 's' for square, 'r' for rectangle, 'c' for circle or 'e' for ellipse
+* @brief Oblicza lokalną entropię obrazu z użyciem podanej maski elementu strukturalnego
+* @param inputGrayImage - obraz wejściowy w skali szarości
+* @param outputImage - obraz wyjściowy w skali szarości - lokalna entropia
+* @param structElem - element strukturalny jako bufor OpenCL (2D maska spłaszczona do tablicy 1D)
+* @param m - wysokość (liczba wierszy) elementu strukturalnego
+* @param n - szerokość (liczba kolumn) elementu strukturalnego
+* @param structLetter - pierwsza litera nazwy elementu strukturalnego - 's' dla kwadratu, 'r' dla prostokąta, 'c' dla koła lub 'e' dla elipsy. 
+* w obecnej wersji programu parametr nie jest używany - przydatny do zadania generowania elementu strukturalnego w czasie działania kernela.
 */
 __kernel void entropy(__read_only image2d_t inputGrayImage, __write_only image2d_t outputImage, __global const uchar* structElem, const int m, const int n, const char structLetter)
 {

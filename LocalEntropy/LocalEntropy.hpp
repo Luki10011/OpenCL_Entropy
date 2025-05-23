@@ -46,80 +46,69 @@ namespace fs = std::filesystem;
 
 using namespace appsdk;
 
-/**
-* LocalEntropy
-* Class implements OpenCL Sobel Filter sample using Images
-*/
-
 std::vector<std::string> findBmpFiles(const std::string& folderPath);
 
+/**
+* @class LocalEntropy
+* Klasa implementująca algorytm obliczania lokalnej entropii dla obrazu
+*/
 class LocalEntropy
 {
-        cl_double setupTime;                /**< time taken to setup OpenCL resources and building kernel */
-        cl_double kernelTime;               /**< time taken to run kernel and read result back */
-        cl_uchar4* inputImageData;          /**< Input bitmap data to device */
-        cl_uchar4* outputImageData;         /**< Output from device */
+    cl_double setupTime;                /**< czas potrzebny na przygotowanie zasobów OpenCL i kompilację kernela */
+    cl_double kernelTime;               /**< czas potrzebny na uruchomienie kernela i odczytanie wyników */
+    cl_uchar4* inputImageData;          /**< dane wejściowe bitmapy przesyłane do urządzenia */
+    cl_uchar4* outputImageData;         /**< wynik otrzymany z urządzenia */
 
-        cl::Context context;                            /**< CL context */
-        std::vector<cl::Device> devices;                /**< CL device list */
-        std::vector<cl::Device> device;                 /**< CL device to be used */
-        std::vector<cl::Platform> platforms;            /**< list of platforms */
-        cl::Image2D inputImage2DGray;                       /**< CL Input image2d */
-        cl::Image2D outputImage2DGray;                      /**< CL Output image2d */
-        cl::Image2D inputImage2DEntropy;                       /**< CL Input image2d */
-        cl::Image2D outputImage2DEntropy;                      /**< CL Output image2d */
-        cl::CommandQueue commandQueue;                  /**< CL command queue */
-        cl::Program program;                            /**< CL program  */
-        cl::Kernel grayscaleKernel;                     /**< Grayscale Kernel */
-        cl::Kernel entropyKernel;                       /**< Entropy Kernel */
+    cl::Context context;                            /**< kontekst OpenCL */
+    std::vector<cl::Device> devices;                /**< lista urządzeń OpenCL */
+    std::vector<cl::Device> device;                 /**< używane urządzenie OpenCL */
+    std::vector<cl::Platform> platforms;            /**< lista platform OpenCL */
+    cl::Image2D inputImage2DGray;                   /**< wejściowy obraz 2D (w skali szarości) */
+    cl::Image2D outputImage2DGray;                  /**< wyjściowy obraz 2D (w skali szarości) */
+    cl::Image2D inputImage2DEntropy;                /**< wejściowy obraz 2D dla obliczeń entropii */
+    cl::Image2D outputImage2DEntropy;               /**< wyjściowy obraz 2D dla obliczeń entropii */
+    cl::CommandQueue commandQueue;                  /**< kolejka poleceń OpenCL */
+    cl::Program program;                            /**< program OpenCL */
+    cl::Kernel grayscaleKernel;                     /**< kernel do konwersji na skalę szarości */
+    cl::Kernel entropyKernel;                       /**< kernel do obliczania lokalnej entropii */
 
-        cl_uchar* verificationOutput;       /**< Output array for reference implementation */
+    cl_uchar* verificationOutput;       /**< tablica wyników dla implementacji referencyjnej */
 
-        SDKBitMap inputBitmap;   /**< Bitmap class object */
-        uchar4* pixelData;       /**< Pointer to image data */
-        cl_uint pixelSize;                  /**< Size of a pixel in BMP format> */
-        cl_uint width;                      /**< Width of image */
-        cl_uint height;                     /**< Height of image */
-        cl_bool byteRWSupport;
-        size_t kernelWorkGroupSize;         /**< Group Size returned by kernel */
-        size_t blockSizeX;                  /**< Work-group size in x-direction */
-        size_t blockSizeY;                  /**< Work-group size in y-direction */
-        int iterations;                     /**< Number of iterations for kernel execution */
-        int imageSupport;
-        std::string inputName;              /**< Name of input image */
-        std::string structShape;            /**< Structure element shape */
-        std::string input_type;            /**< Input type [directory or image]*/
-        int mStruct;                        /**< Number of structure element rows */
-        int nStruct;                        /**< Number of structure element cols */
-        std::string Alt_ImageName;
-        std::vector<cl_uchar> structElem;                  /**< Structure element for local entropy filtration flatten to 1D vector*/
-        int is_dir;                        /**< Flag to check if input is directory or image */
-        int print_flag;
-        SDKTimer    *sampleTimer;      /**< SDKTimer object */
-        float totalTime_inSeconds; /**< Setup time + kernel time */
-        float totalKernelTime_inSeconds; /**< Total time taken for kernel execution */
+    SDKBitMap inputBitmap;              /**< obiekt klasy bitmapy */
+    uchar4* pixelData;                  /**< wskaźnik na dane obrazu */
+    cl_uint pixelSize;                  /**< rozmiar piksela w formacie BMP */
+    cl_uint width;                      /**< szerokość obrazu */
+    cl_uint height;                     /**< wysokość obrazu */
+    cl_bool byteRWSupport;
+    size_t kernelWorkGroupSize;         /**< rozmiar grupy roboczej zwrócony przez kernel */
+    size_t blockSizeX;                  /**< rozmiar grupy roboczej w kierunku X */
+    size_t blockSizeY;                  /**< rozmiar grupy roboczej w kierunku Y */
+    int iterations;                     /**< liczba iteracji wykonania kernela */
+    int imageSupport;
+    std::string inputName;              /**< nazwa pliku wejściowego obrazu */
+    std::string structShape;            /**< kształt elementu strukturalnego */
+    std::string input_type;             /**< typ wejścia [folder lub obraz] */
+    int mStruct;                        /**< liczba wierszy elementu strukturalnego */
+    int nStruct;                        /**< liczba kolumn elementu strukturalnego */
+    std::string Alt_ImageName;
+    std::vector<cl_uchar> structElem;   /**< spłaszczony element strukturalny do filtracji entropii lokalnej */
+    int is_dir;                         /**< flaga określająca, czy wejściem jest folder, czy obraz */
+    int print_flag;
+    SDKTimer* sampleTimer;              /**< obiekt klasy SDKTimer */
+    float totalTime_inSeconds;          /**< czas całkowity: przygotowanie + wykonanie kernela */
+    float totalKernelTime_inSeconds;    /**< całkowity czas wykonania kernela */
 
-    public:
+public:
 
-        CLCommandArgs   *sampleArgs;   /**< CLCommand argument class */
+    CLCommandArgs* sampleArgs;          /**< klasa obsługująca argumenty wejściowe CL */
 
-        /**
-        * Read bitmap image and allocate host memory
-        * @param inputImageName name of the input file
-        * @return SDK_SUCCESS on success and SDK_FAILURE on failure
-        */
         int readInputImage(std::string inputImageName);
 
-        /**
-        * Write to an image file
-        * @param outputImageName name of the output file
-        * @return SDK_SUCCESS on success and SDK_FAILURE on failure
-        */
         int writeOutputImage(std::string outputImageName);
 
         /**
-        * Constructor (s)
-        * Initialize member variables
+        * Konstruktor
+        * Inicjalizuje parametry obiektu
         */
         LocalEntropy()
             : inputImageData(NULL),
@@ -137,7 +126,7 @@ class LocalEntropy
             iterations = 1;
             imageSupport = 0;
             inputName = INPUT_IMAGE;
-            structShape = DEF_STRUCT;  // można zmienić na enum
+            structShape = DEF_STRUCT;
             mStruct = 0;
             nStruct = 0;
             Alt_ImageName = "default";
@@ -163,7 +152,7 @@ class LocalEntropy
         iterations = 1;
         imageSupport = 0;
         inputName = INPUT_IMAGE;
-        structShape = DEF_STRUCT;  // można zmienić na enum
+        structShape = DEF_STRUCT;
         mStruct = 0;
         nStruct = 0;
         Alt_ImageName = input_img_name;
@@ -177,10 +166,6 @@ class LocalEntropy
         {
         }
 
-        /**
-        * Allocate image memory and Load bitmap file
-        * @return SDK_SUCCESS on success and SDK_FAILURE on failure
-        */
         int setupLocalEntropy();
 
         std::string getInputName(){
@@ -195,69 +180,22 @@ class LocalEntropy
             inputName = name;
         }
 
-        /**
-         * Override from SDKSample, Generate binary image of given kernel
-         * and exit application
-         * @return SDK_SUCCESS on success and SDK_FAILURE on failure
-         */
         int genBinaryImage();
 
-        /**
-        * OpenCL related initialisations.
-        * Set up Context, Device list, Command Queue, Memory buffers
-        * Build CL kernel program executable
-        * @return SDK_SUCCESS on success and SDK_FAILURE on failure
-        */
         int setupCL();
 
-        /**
-        * Set values for kernels' arguments, enqueue calls to the kernels
-        * on to the command queue, wait till end of kernel execution.
-        * Get kernel start and end time if timing is enabled
-        * @return SDK_SUCCESS on success and SDK_FAILURE on failure
-        */
         int runCLKernels();
 
-        /**
-        * Reference CPU implementation of Binomial Option
-        * for performance comparison
-        */
-        void LocalEntropyCPUReference();
-
-        /**
-        * Override from SDKSample. Print sample stats.
-        */
         void printStats();
 
-        /**
-        * Override from SDKSample. Initialize
-        * command line parser, add custom options
-        * @return SDK_SUCCESS on success and SDK_FAILURE on failure
-        */
         int initialize();
 
-        /**
-        * Override from SDKSample, adjust width and height
-        * of execution domain, perform all sample setup
-        * @return SDK_SUCCESS on success and SDK_FAILURE on failure
-        */
         int setup();
-
 
         int readInputImage_wrapper();
 
-        /**
-        * Override from SDKSample
-        * Run OpenCL Sobel Filter
-        * @return SDK_SUCCESS on success and SDK_FAILURE on failure
-        */
         int run();
 
-        /**
-        * Override from SDKSample
-        * Cleanup memory allocations
-        * @return SDK_SUCCESS on success and SDK_FAILURE on failure
-        */
         int cleanup();
 
         std::string getAltImgName(){

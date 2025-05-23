@@ -1,0 +1,439 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Local Entropy: Dokumentacja klasy LocalEntropy</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Local Entropy
+   &#160;<span id="projectnumber">1.0</span>
+   </div>
+   <div id="projectbrief">GPU accelerated local entropy of an image</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Szukaj','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Szukaj');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Metody publiczne</a> &#124;
+<a href="#pub-attribs">Pola danych</a>  </div>
+  <div class="headertitle">
+<div class="title">Dokumentacja klasy LocalEntropy</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="LocalEntropy_8hpp_source.html">LocalEntropy.hpp</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Metody publiczne</h2></td></tr>
+<tr class="memitem:a47df40c3c70ce5dba626010e575bbdc6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLocalEntropy.html#a47df40c3c70ce5dba626010e575bbdc6">readInputImage</a> (std::string inputImageName)</td></tr>
+<tr class="memdesc:a47df40c3c70ce5dba626010e575bbdc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wczytuje obraz wejściowy i przygotowuje dane do przetwarzania.  <a href="classLocalEntropy.html#a47df40c3c70ce5dba626010e575bbdc6">Więcej...</a><br /></td></tr>
+<tr class="separator:a47df40c3c70ce5dba626010e575bbdc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6215165f5a05749864948181384bec51"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLocalEntropy.html#a6215165f5a05749864948181384bec51">writeOutputImage</a> (std::string outputImageName)</td></tr>
+<tr class="memdesc:a6215165f5a05749864948181384bec51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zapisuje dane wyjściowego obrazu do pliku .bmp.  <a href="classLocalEntropy.html#a6215165f5a05749864948181384bec51">Więcej...</a><br /></td></tr>
+<tr class="separator:a6215165f5a05749864948181384bec51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78b2a4a0abf9cac780e1046556360225"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLocalEntropy.html#a78b2a4a0abf9cac780e1046556360225">LocalEntropy</a> ()</td></tr>
+<tr class="separator:a78b2a4a0abf9cac780e1046556360225"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21022d5512082365284768e1f0be0b9a"><td class="memItemLeft" align="right" valign="top"><a id="a21022d5512082365284768e1f0be0b9a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>LocalEntropy</b> (std::string input_img_name, int print_flag)</td></tr>
+<tr class="separator:a21022d5512082365284768e1f0be0b9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0fdc6dfbe9927d73fda56216c0f249e"><td class="memItemLeft" align="right" valign="top"><a id="ab0fdc6dfbe9927d73fda56216c0f249e"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>setupLocalEntropy</b> ()</td></tr>
+<tr class="separator:ab0fdc6dfbe9927d73fda56216c0f249e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a636808d1c49399cda8582f6cd91aefb2"><td class="memItemLeft" align="right" valign="top"><a id="a636808d1c49399cda8582f6cd91aefb2"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getInputName</b> ()</td></tr>
+<tr class="separator:a636808d1c49399cda8582f6cd91aefb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87916f993ded4e98727e7c915aeaf96e"><td class="memItemLeft" align="right" valign="top"><a id="a87916f993ded4e98727e7c915aeaf96e"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getInputType</b> ()</td></tr>
+<tr class="separator:a87916f993ded4e98727e7c915aeaf96e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3233a828a05073e11dd5cd8e0c5dd53c"><td class="memItemLeft" align="right" valign="top"><a id="a3233a828a05073e11dd5cd8e0c5dd53c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setInputName</b> (std::string name)</td></tr>
+<tr class="separator:a3233a828a05073e11dd5cd8e0c5dd53c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96bb85c89fbd6833e3b1d6701542ac3c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLocalEntropy.html#a96bb85c89fbd6833e3b1d6701542ac3c">genBinaryImage</a> ()</td></tr>
+<tr class="memdesc:a96bb85c89fbd6833e3b1d6701542ac3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generuje plik binarny z kodem kernela OpenCL.  <a href="classLocalEntropy.html#a96bb85c89fbd6833e3b1d6701542ac3c">Więcej...</a><br /></td></tr>
+<tr class="separator:a96bb85c89fbd6833e3b1d6701542ac3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a975a1f99f40e6b869d31723918771ed3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLocalEntropy.html#a975a1f99f40e6b869d31723918771ed3">setupCL</a> ()</td></tr>
+<tr class="memdesc:a975a1f99f40e6b869d31723918771ed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inicjalizuje środowisko OpenCL.  <a href="classLocalEntropy.html#a975a1f99f40e6b869d31723918771ed3">Więcej...</a><br /></td></tr>
+<tr class="separator:a975a1f99f40e6b869d31723918771ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97c79891946e4c544e969ae0c312cd65"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLocalEntropy.html#a97c79891946e4c544e969ae0c312cd65">runCLKernels</a> ()</td></tr>
+<tr class="memdesc:a97c79891946e4c544e969ae0c312cd65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uruchamia kernele OpenCL do przetwarzania obrazu.  <a href="classLocalEntropy.html#a97c79891946e4c544e969ae0c312cd65">Więcej...</a><br /></td></tr>
+<tr class="separator:a97c79891946e4c544e969ae0c312cd65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8bef59d4c24d8dd30bfd04bc7f5c291"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLocalEntropy.html#ae8bef59d4c24d8dd30bfd04bc7f5c291">printStats</a> ()</td></tr>
+<tr class="memdesc:ae8bef59d4c24d8dd30bfd04bc7f5c291"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wyświetla statystyki czasowe wykonania programu.  <a href="classLocalEntropy.html#ae8bef59d4c24d8dd30bfd04bc7f5c291">Więcej...</a><br /></td></tr>
+<tr class="separator:ae8bef59d4c24d8dd30bfd04bc7f5c291"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a269dae20bc73a382ac03d3c98691c0ac"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLocalEntropy.html#a269dae20bc73a382ac03d3c98691c0ac">initialize</a> ()</td></tr>
+<tr class="memdesc:a269dae20bc73a382ac03d3c98691c0ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inicjalizuje opcje programu.  <a href="classLocalEntropy.html#a269dae20bc73a382ac03d3c98691c0ac">Więcej...</a><br /></td></tr>
+<tr class="separator:a269dae20bc73a382ac03d3c98691c0ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2aa2305e999a0de90b6e56b223c8434e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLocalEntropy.html#a2aa2305e999a0de90b6e56b223c8434e">setup</a> ()</td></tr>
+<tr class="memdesc:a2aa2305e999a0de90b6e56b223c8434e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Konfiguruje środowisko przed uruchomieniem obliczeń.  <a href="classLocalEntropy.html#a2aa2305e999a0de90b6e56b223c8434e">Więcej...</a><br /></td></tr>
+<tr class="separator:a2aa2305e999a0de90b6e56b223c8434e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c33d55444d40dede23b822abd5d2808"><td class="memItemLeft" align="right" valign="top"><a id="a3c33d55444d40dede23b822abd5d2808"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>readInputImage_wrapper</b> ()</td></tr>
+<tr class="separator:a3c33d55444d40dede23b822abd5d2808"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87903f90f05f10963c66fb9c9e02ed40"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLocalEntropy.html#a87903f90f05f10963c66fb9c9e02ed40">run</a> ()</td></tr>
+<tr class="memdesc:a87903f90f05f10963c66fb9c9e02ed40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uruchamia obliczenia lokalnej entropii dla obrazu wejściowego.  <a href="classLocalEntropy.html#a87903f90f05f10963c66fb9c9e02ed40">Więcej...</a><br /></td></tr>
+<tr class="separator:a87903f90f05f10963c66fb9c9e02ed40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a351d140d2d43f6b618c717d881251b87"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLocalEntropy.html#a351d140d2d43f6b618c717d881251b87">cleanup</a> ()</td></tr>
+<tr class="memdesc:a351d140d2d43f6b618c717d881251b87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zwalnia zaalokowane zasoby programu.  <a href="classLocalEntropy.html#a351d140d2d43f6b618c717d881251b87">Więcej...</a><br /></td></tr>
+<tr class="separator:a351d140d2d43f6b618c717d881251b87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71a05b27c68de32cc3ded16eebe269b4"><td class="memItemLeft" align="right" valign="top"><a id="a71a05b27c68de32cc3ded16eebe269b4"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getAltImgName</b> ()</td></tr>
+<tr class="separator:a71a05b27c68de32cc3ded16eebe269b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada8604178643c1eabb199d1d1b0ed36c"><td class="memItemLeft" align="right" valign="top"><a id="ada8604178643c1eabb199d1d1b0ed36c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>get_is_dir</b> ()</td></tr>
+<tr class="separator:ada8604178643c1eabb199d1d1b0ed36c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f516507dc4d63fc6bd444e0a1eb4efc"><td class="memItemLeft" align="right" valign="top"><a id="a7f516507dc4d63fc6bd444e0a1eb4efc"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>getTotalTime</b> ()</td></tr>
+<tr class="separator:a7f516507dc4d63fc6bd444e0a1eb4efc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc7bd0314810c528314d4e4e586ba9a9"><td class="memItemLeft" align="right" valign="top"><a id="abc7bd0314810c528314d4e4e586ba9a9"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>getTotalKernelTime</b> ()</td></tr>
+<tr class="separator:abc7bd0314810c528314d4e4e586ba9a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Pola danych</h2></td></tr>
+<tr class="memitem:a964753e270d71e495fbf717a6ff5b4b9"><td class="memItemLeft" align="right" valign="top">CLCommandArgs *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLocalEntropy.html#a964753e270d71e495fbf717a6ff5b4b9">sampleArgs</a></td></tr>
+<tr class="separator:a964753e270d71e495fbf717a6ff5b4b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Opis szczegółowy</h2>
+<div class="textblock"><p>Klasa implementująca algorytm obliczania lokalnej entropii dla obrazu </p>
+</div><h2 class="groupheader">Dokumentacja konstruktora i destruktora</h2>
+<a id="a78b2a4a0abf9cac780e1046556360225"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78b2a4a0abf9cac780e1046556360225">&#9670;&nbsp;</a></span>LocalEntropy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">LocalEntropy::LocalEntropy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Konstruktor Inicjalizuje parametry obiektu </p>
+
+</div>
+</div>
+<h2 class="groupheader">Dokumentacja funkcji składowych</h2>
+<a id="a351d140d2d43f6b618c717d881251b87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a351d140d2d43f6b618c717d881251b87">&#9670;&nbsp;</a></span>cleanup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int LocalEntropy::cleanup </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Zwalnia zaalokowane zasoby programu. </p>
+<dl class="section return"><dt>Zwraca</dt><dd>int Zwraca SDK_SUCCESS po poprawnym zwolnieniu zasobów. </dd></dl>
+<dl class="section note"><dt>Nota</dt><dd>Funkcja w całości pochodzi z przykładowej aplikacji pakietu AMD SDK. </dd></dl>
+
+</div>
+</div>
+<a id="a96bb85c89fbd6833e3b1d6701542ac3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96bb85c89fbd6833e3b1d6701542ac3c">&#9670;&nbsp;</a></span>genBinaryImage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int LocalEntropy::genBinaryImage </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Generuje plik binarny z kodem kernela OpenCL. </p>
+<p>Tworzy strukturę z informacjami o pliku jądra, opcjach kompilatora i nazwie wyjściowego pliku binarnego, a następnie kompiluje kod OpenCL do postaci binarnej.</p>
+<dl class="section return"><dt>Zwraca</dt><dd>SDK_SUCCESS (0) jeśli operacja się powiodła, SDK_FAILURE (1) w przypadku niepowodzenia.</dd></dl>
+<dl class="section note"><dt>Nota</dt><dd>Funkcja w całości pochodzi z przykładowej aplikacji pakietu AMD SDK. </dd></dl>
+
+</div>
+</div>
+<a id="a269dae20bc73a382ac03d3c98691c0ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a269dae20bc73a382ac03d3c98691c0ac">&#9670;&nbsp;</a></span>initialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int LocalEntropy::initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Inicjalizuje opcje programu. </p>
+<p>Ustawia domyślne wartości i rejestruje argumenty linii poleceń.</p>
+<dl class="section return"><dt>Zwraca</dt><dd>SDK_SUCCESS (0) w przypadku powodzenia, SDK_FAILURE (1) w przypadku błędu wykonania.</dd></dl>
+<dl class="section note"><dt>Nota</dt><dd>Funkcja została napisana na podstawie analogicznej funkcji z przykładowej aplikacji pakietu AMD SDK. </dd></dl>
+
+</div>
+</div>
+<a id="ae8bef59d4c24d8dd30bfd04bc7f5c291"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8bef59d4c24d8dd30bfd04bc7f5c291">&#9670;&nbsp;</a></span>printStats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LocalEntropy::printStats </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Wyświetla statystyki czasowe wykonania programu. </p>
+<p>Jeśli aktywne są pomiary czasu, wypisywane są: szerokość i wysokość obrazu, całkowity czas wykonania oraz czas działania jądra OpenCL. </p><dl class="section note"><dt>Nota</dt><dd>Funkcja w całości pochodzi z przykładowej aplikacji pakietu AMD SDK. </dd></dl>
+
+</div>
+</div>
+<a id="a47df40c3c70ce5dba626010e575bbdc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47df40c3c70ce5dba626010e575bbdc6">&#9670;&nbsp;</a></span>readInputImage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int LocalEntropy::readInputImage </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>inputImageName</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Wczytuje obraz wejściowy i przygotowuje dane do przetwarzania. </p>
+<p>Ładuje bitmapę z podanej ścieżki, sprawdza poprawność wczytania, inicjalizuje bufor wejściowy i wyjściowy - dynamicznie alokuje dla nich pamieć. W przypadku błędów w alokacji pamięci lub wczytywaniu obrazu, funkcja wypisuje komunikat i zwraca kod błędu.</p>
+<dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">inputImageName</td><td>Ścieżka do obrazu wejściowego - pliku w typie .bmp. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Zwraca</dt><dd>SDK_SUCCESS (0) jeśli operacja zakończyła się sukcesem, SDK_FAILURE (1) w przypadku błędu.</dd></dl>
+<dl class="section note"><dt>Nota</dt><dd>Funkcja w całości pochodzi z przykładowej aplikacji pakietu AMD SDK </dd></dl>
+<dl class="section warning"><dt>Ostrzeżenie</dt><dd>Funkcja dynamicznie alokuje pamięć, ale nie zwalnia jej - należy o tym pamiętać </dd></dl>
+
+</div>
+</div>
+<a id="a87903f90f05f10963c66fb9c9e02ed40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87903f90f05f10963c66fb9c9e02ed40">&#9670;&nbsp;</a></span>run()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int LocalEntropy::run </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Uruchamia obliczenia lokalnej entropii dla obrazu wejściowego. </p>
+<p>Uruchamia kernel OpenCL przez zadaną liczbę iteracji oraz zapisuje wynikowy obraz do pliku. Mierzy też czas wykonania kernela.</p>
+<dl class="section return"><dt>Zwraca</dt><dd>SDK_SUCCESS w przypadku sukcesu, SDK_FAILURE w razie błędu </dd></dl>
+<dl class="section note"><dt>Nota</dt><dd>Funkcja została napisana na podstawie analogicznej funkcji z przykładowej aplikacji pakietu AMD SDK. </dd></dl>
+
+</div>
+</div>
+<a id="a97c79891946e4c544e969ae0c312cd65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97c79891946e4c544e969ae0c312cd65">&#9670;&nbsp;</a></span>runCLKernels()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int LocalEntropy::runCLKernels </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Uruchamia kernele OpenCL do przetwarzania obrazu. </p>
+<p>Funkcja wykonuje następujące kroki:</p><ul>
+<li>Kopiuje dane wejściowe do bufora obrazu w pamięci urządzenia.</li>
+<li>Uruchamia kernel konwertujące obraz do skali szarości.</li>
+<li>Uruchamia kernel obliczające lokalną entropię na podstawie przetworzonego obrazu.</li>
+<li>Odczytuje wynikowe dane obrazu z powrotem do pamięci hosta (komputera, na którym działa program).</li>
+</ul>
+<dl class="section return"><dt>Zwraca</dt><dd>SDK_SUCCESS (0) w przypadku powodzenia, SDK_FAILURE (1) w przypadku błędu wykonania.</dd></dl>
+<dl class="section note"><dt>Nota</dt><dd>Funkcja wymaga poprawnej konfiguracji kontekstu i kernelów (np. przez <a class="el" href="classLocalEntropy.html#a975a1f99f40e6b869d31723918771ed3" title="Inicjalizuje środowisko OpenCL.">setupCL()</a>). Funkcja została napisana na podstawie analogicznej funkcji z przykładowej aplikacji pakietu AMD SDK. </dd></dl>
+
+</div>
+</div>
+<a id="a2aa2305e999a0de90b6e56b223c8434e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2aa2305e999a0de90b6e56b223c8434e">&#9670;&nbsp;</a></span>setup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int LocalEntropy::setup </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Konfiguruje środowisko przed uruchomieniem obliczeń. </p>
+<p>Przetwarza parametry wejściowe, nazwa pliku wejściowego, rozmiary elementu strukturalnego oraz jego kształt (szczegóły dostępne po uruchomieniu programu z opcją &ndash;help). Następnie wczytuje obraz wejściowy, tworzy element strukturalny zgodnie z ustawieniami oraz inicjalizuje OpenCL i timery do pomaru czasu wykonywania się programu.</p>
+<dl class="section return"><dt>Zwraca</dt><dd>SDK_SUCCESS w przypadku powodzenia, SDK_FAILURE w przypadku błędów </dd></dl>
+<dl class="section note"><dt>Nota</dt><dd>Funkcja została napisana na podstawie analogicznej funkcji z przykładowej aplikacji pakietu AMD SDK. </dd></dl>
+
+</div>
+</div>
+<a id="a975a1f99f40e6b869d31723918771ed3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a975a1f99f40e6b869d31723918771ed3">&#9670;&nbsp;</a></span>setupCL()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int LocalEntropy::setupCL </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Inicjalizuje środowisko OpenCL. </p>
+<p>Wybiera platformę i urządzenie (CPU lub GPU), tworzy konteksty, kolejkę poleceń oraz obrazy i bufory pamięci dla programu. Wczytuje i kompiluje pliki kerneli OpenCL. W razie potrzeby wyświetla informacje o błędach.</p>
+<dl class="section return"><dt>Zwraca</dt><dd>SDK_SUCCESS (0) w przypadku powodzenia, SDK_FAILURE (1) w przypadku błędu inicjalizacji.</dd></dl>
+<dl class="section note"><dt>Nota</dt><dd>Funkcja została napisana na podstawie analogicznej funkcji z przykładowej aplikacji pakietu AMD SDK. </dd></dl>
+
+</div>
+</div>
+<a id="a6215165f5a05749864948181384bec51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6215165f5a05749864948181384bec51">&#9670;&nbsp;</a></span>writeOutputImage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int LocalEntropy::writeOutputImage </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>outputImageName</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Zapisuje dane wyjściowego obrazu do pliku .bmp. </p>
+<p>Kopiuje dane z bufora wyjściowego do bufora pikseli i zapisuje dane do pliku .bmp o podanej nazwie. Jeśli operacja zapisu się nie powiedzie, wypisywany jest komunikat błędu, a funkcja zwraca kod błędu.</p>
+<dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">outputImageName</td><td>Ścieżka pliku .bmp do zapisania danych. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Zwraca</dt><dd>SDK_SUCCESS (0) jeśli zapis się powiódł, SDK_FAILURE (1) w przypadku niepowodzenia.</dd></dl>
+<dl class="section note"><dt>Nota</dt><dd>Funkcja w całości pochodzi z przykładowej aplikacji pakietu AMD SDK. </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Dokumentacja pól</h2>
+<a id="a964753e270d71e495fbf717a6ff5b4b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a964753e270d71e495fbf717a6ff5b4b9">&#9670;&nbsp;</a></span>sampleArgs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">CLCommandArgs* LocalEntropy::sampleArgs</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>klasa obsługująca argumenty wejściowe CL </p>
+
+</div>
+</div>
+<hr/>Dokumentacja dla tej klasy została wygenerowana z plików:<ul>
+<li><a class="el" href="LocalEntropy_8hpp_source.html">LocalEntropy.hpp</a></li>
+<li>LocalEntropy.cpp</li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Wygenerowano przez&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
+</small></address>
+</body>
+</html>

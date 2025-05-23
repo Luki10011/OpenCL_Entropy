@@ -1,0 +1,288 @@
+\hypertarget{classLocalEntropy}{}\doxysection{Dokumentacja klasy Local\+Entropy}
+\label{classLocalEntropy}\index{LocalEntropy@{LocalEntropy}}
+
+
+{\ttfamily \#include $<$Local\+Entropy.\+hpp$>$}
+
+\doxysubsection*{Metody publiczne}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classLocalEntropy_a47df40c3c70ce5dba626010e575bbdc6}{read\+Input\+Image}} (std\+::string input\+Image\+Name)
+\begin{DoxyCompactList}\small\item\em Wczytuje obraz wejściowy i przygotowuje dane do przetwarzania. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classLocalEntropy_a6215165f5a05749864948181384bec51}{write\+Output\+Image}} (std\+::string output\+Image\+Name)
+\begin{DoxyCompactList}\small\item\em Zapisuje dane wyjściowego obrazu do pliku .bmp. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classLocalEntropy_a78b2a4a0abf9cac780e1046556360225}{Local\+Entropy}} ()
+\item 
+\mbox{\Hypertarget{classLocalEntropy_a21022d5512082365284768e1f0be0b9a}\label{classLocalEntropy_a21022d5512082365284768e1f0be0b9a}} 
+{\bfseries Local\+Entropy} (std\+::string input\+\_\+img\+\_\+name, int print\+\_\+flag)
+\item 
+\mbox{\Hypertarget{classLocalEntropy_ab0fdc6dfbe9927d73fda56216c0f249e}\label{classLocalEntropy_ab0fdc6dfbe9927d73fda56216c0f249e}} 
+int {\bfseries setup\+Local\+Entropy} ()
+\item 
+\mbox{\Hypertarget{classLocalEntropy_a636808d1c49399cda8582f6cd91aefb2}\label{classLocalEntropy_a636808d1c49399cda8582f6cd91aefb2}} 
+std\+::string {\bfseries get\+Input\+Name} ()
+\item 
+\mbox{\Hypertarget{classLocalEntropy_a87916f993ded4e98727e7c915aeaf96e}\label{classLocalEntropy_a87916f993ded4e98727e7c915aeaf96e}} 
+std\+::string {\bfseries get\+Input\+Type} ()
+\item 
+\mbox{\Hypertarget{classLocalEntropy_a3233a828a05073e11dd5cd8e0c5dd53c}\label{classLocalEntropy_a3233a828a05073e11dd5cd8e0c5dd53c}} 
+void {\bfseries set\+Input\+Name} (std\+::string name)
+\item 
+int \mbox{\hyperlink{classLocalEntropy_a96bb85c89fbd6833e3b1d6701542ac3c}{gen\+Binary\+Image}} ()
+\begin{DoxyCompactList}\small\item\em Generuje plik binarny z kodem kernela Open\+CL. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classLocalEntropy_a975a1f99f40e6b869d31723918771ed3}{setup\+CL}} ()
+\begin{DoxyCompactList}\small\item\em Inicjalizuje środowisko Open\+CL. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classLocalEntropy_a97c79891946e4c544e969ae0c312cd65}{run\+CLKernels}} ()
+\begin{DoxyCompactList}\small\item\em Uruchamia kernele Open\+CL do przetwarzania obrazu. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classLocalEntropy_ae8bef59d4c24d8dd30bfd04bc7f5c291}{print\+Stats}} ()
+\begin{DoxyCompactList}\small\item\em Wyświetla statystyki czasowe wykonania programu. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classLocalEntropy_a269dae20bc73a382ac03d3c98691c0ac}{initialize}} ()
+\begin{DoxyCompactList}\small\item\em Inicjalizuje opcje programu. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classLocalEntropy_a2aa2305e999a0de90b6e56b223c8434e}{setup}} ()
+\begin{DoxyCompactList}\small\item\em Konfiguruje środowisko przed uruchomieniem obliczeń. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classLocalEntropy_a3c33d55444d40dede23b822abd5d2808}\label{classLocalEntropy_a3c33d55444d40dede23b822abd5d2808}} 
+int {\bfseries read\+Input\+Image\+\_\+wrapper} ()
+\item 
+int \mbox{\hyperlink{classLocalEntropy_a87903f90f05f10963c66fb9c9e02ed40}{run}} ()
+\begin{DoxyCompactList}\small\item\em Uruchamia obliczenia lokalnej entropii dla obrazu wejściowego. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classLocalEntropy_a351d140d2d43f6b618c717d881251b87}{cleanup}} ()
+\begin{DoxyCompactList}\small\item\em Zwalnia zaalokowane zasoby programu. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classLocalEntropy_a71a05b27c68de32cc3ded16eebe269b4}\label{classLocalEntropy_a71a05b27c68de32cc3ded16eebe269b4}} 
+std\+::string {\bfseries get\+Alt\+Img\+Name} ()
+\item 
+\mbox{\Hypertarget{classLocalEntropy_ada8604178643c1eabb199d1d1b0ed36c}\label{classLocalEntropy_ada8604178643c1eabb199d1d1b0ed36c}} 
+int {\bfseries get\+\_\+is\+\_\+dir} ()
+\item 
+\mbox{\Hypertarget{classLocalEntropy_a7f516507dc4d63fc6bd444e0a1eb4efc}\label{classLocalEntropy_a7f516507dc4d63fc6bd444e0a1eb4efc}} 
+float {\bfseries get\+Total\+Time} ()
+\item 
+\mbox{\Hypertarget{classLocalEntropy_abc7bd0314810c528314d4e4e586ba9a9}\label{classLocalEntropy_abc7bd0314810c528314d4e4e586ba9a9}} 
+float {\bfseries get\+Total\+Kernel\+Time} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Pola danych}
+\begin{DoxyCompactItemize}
+\item 
+CLCommand\+Args $\ast$ \mbox{\hyperlink{classLocalEntropy_a964753e270d71e495fbf717a6ff5b4b9}{sample\+Args}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Opis szczegółowy}
+Klasa implementująca algorytm obliczania lokalnej entropii dla obrazu 
+
+\doxysubsection{Dokumentacja konstruktora i destruktora}
+\mbox{\Hypertarget{classLocalEntropy_a78b2a4a0abf9cac780e1046556360225}\label{classLocalEntropy_a78b2a4a0abf9cac780e1046556360225}} 
+\index{LocalEntropy@{LocalEntropy}!LocalEntropy@{LocalEntropy}}
+\index{LocalEntropy@{LocalEntropy}!LocalEntropy@{LocalEntropy}}
+\doxysubsubsection{\texorpdfstring{LocalEntropy()}{LocalEntropy()}}
+{\footnotesize\ttfamily Local\+Entropy\+::\+Local\+Entropy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Konstruktor Inicjalizuje parametry obiektu 
+
+\doxysubsection{Dokumentacja funkcji składowych}
+\mbox{\Hypertarget{classLocalEntropy_a351d140d2d43f6b618c717d881251b87}\label{classLocalEntropy_a351d140d2d43f6b618c717d881251b87}} 
+\index{LocalEntropy@{LocalEntropy}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!LocalEntropy@{LocalEntropy}}
+\doxysubsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily int Local\+Entropy\+::cleanup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Zwalnia zaalokowane zasoby programu. 
+
+\begin{DoxyReturn}{Zwraca}
+int Zwraca SDK\+\_\+\+SUCCESS po poprawnym zwolnieniu zasobów. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Nota}
+Funkcja w całości pochodzi z przykładowej aplikacji pakietu AMD SDK. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classLocalEntropy_a96bb85c89fbd6833e3b1d6701542ac3c}\label{classLocalEntropy_a96bb85c89fbd6833e3b1d6701542ac3c}} 
+\index{LocalEntropy@{LocalEntropy}!genBinaryImage@{genBinaryImage}}
+\index{genBinaryImage@{genBinaryImage}!LocalEntropy@{LocalEntropy}}
+\doxysubsubsection{\texorpdfstring{genBinaryImage()}{genBinaryImage()}}
+{\footnotesize\ttfamily int Local\+Entropy\+::gen\+Binary\+Image (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Generuje plik binarny z kodem kernela Open\+CL. 
+
+Tworzy strukturę z informacjami o pliku jądra, opcjach kompilatora i nazwie wyjściowego pliku binarnego, a następnie kompiluje kod Open\+CL do postaci binarnej.
+
+\begin{DoxyReturn}{Zwraca}
+SDK\+\_\+\+SUCCESS (0) jeśli operacja się powiodła, SDK\+\_\+\+FAILURE (1) w przypadku niepowodzenia.
+\end{DoxyReturn}
+\begin{DoxyNote}{Nota}
+Funkcja w całości pochodzi z przykładowej aplikacji pakietu AMD SDK. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classLocalEntropy_a269dae20bc73a382ac03d3c98691c0ac}\label{classLocalEntropy_a269dae20bc73a382ac03d3c98691c0ac}} 
+\index{LocalEntropy@{LocalEntropy}!initialize@{initialize}}
+\index{initialize@{initialize}!LocalEntropy@{LocalEntropy}}
+\doxysubsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily int Local\+Entropy\+::initialize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Inicjalizuje opcje programu. 
+
+Ustawia domyślne wartości i rejestruje argumenty linii poleceń.
+
+\begin{DoxyReturn}{Zwraca}
+SDK\+\_\+\+SUCCESS (0) w przypadku powodzenia, SDK\+\_\+\+FAILURE (1) w przypadku błędu wykonania.
+\end{DoxyReturn}
+\begin{DoxyNote}{Nota}
+Funkcja została napisana na podstawie analogicznej funkcji z przykładowej aplikacji pakietu AMD SDK. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classLocalEntropy_ae8bef59d4c24d8dd30bfd04bc7f5c291}\label{classLocalEntropy_ae8bef59d4c24d8dd30bfd04bc7f5c291}} 
+\index{LocalEntropy@{LocalEntropy}!printStats@{printStats}}
+\index{printStats@{printStats}!LocalEntropy@{LocalEntropy}}
+\doxysubsubsection{\texorpdfstring{printStats()}{printStats()}}
+{\footnotesize\ttfamily void Local\+Entropy\+::print\+Stats (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Wyświetla statystyki czasowe wykonania programu. 
+
+Jeśli aktywne są pomiary czasu, wypisywane są\+: szerokość i wysokość obrazu, całkowity czas wykonania oraz czas działania jądra Open\+CL. \begin{DoxyNote}{Nota}
+Funkcja w całości pochodzi z przykładowej aplikacji pakietu AMD SDK. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classLocalEntropy_a47df40c3c70ce5dba626010e575bbdc6}\label{classLocalEntropy_a47df40c3c70ce5dba626010e575bbdc6}} 
+\index{LocalEntropy@{LocalEntropy}!readInputImage@{readInputImage}}
+\index{readInputImage@{readInputImage}!LocalEntropy@{LocalEntropy}}
+\doxysubsubsection{\texorpdfstring{readInputImage()}{readInputImage()}}
+{\footnotesize\ttfamily int Local\+Entropy\+::read\+Input\+Image (\begin{DoxyParamCaption}\item[{std\+::string}]{input\+Image\+Name }\end{DoxyParamCaption})}
+
+
+
+Wczytuje obraz wejściowy i przygotowuje dane do przetwarzania. 
+
+Ładuje bitmapę z podanej ścieżki, sprawdza poprawność wczytania, inicjalizuje bufor wejściowy i wyjściowy -\/ dynamicznie alokuje dla nich pamieć. W przypadku błędów w alokacji pamięci lub wczytywaniu obrazu, funkcja wypisuje komunikat i zwraca kod błędu.
+
+
+\begin{DoxyParams}{Parametry}
+{\em input\+Image\+Name} & Ścieżka do obrazu wejściowego -\/ pliku w typie .bmp. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Zwraca}
+SDK\+\_\+\+SUCCESS (0) jeśli operacja zakończyła się sukcesem, SDK\+\_\+\+FAILURE (1) w przypadku błędu.
+\end{DoxyReturn}
+\begin{DoxyNote}{Nota}
+Funkcja w całości pochodzi z przykładowej aplikacji pakietu AMD SDK 
+\end{DoxyNote}
+\begin{DoxyWarning}{Ostrzeżenie}
+Funkcja dynamicznie alokuje pamięć, ale nie zwalnia jej -\/ należy o tym pamiętać 
+\end{DoxyWarning}
+\mbox{\Hypertarget{classLocalEntropy_a87903f90f05f10963c66fb9c9e02ed40}\label{classLocalEntropy_a87903f90f05f10963c66fb9c9e02ed40}} 
+\index{LocalEntropy@{LocalEntropy}!run@{run}}
+\index{run@{run}!LocalEntropy@{LocalEntropy}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily int Local\+Entropy\+::run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Uruchamia obliczenia lokalnej entropii dla obrazu wejściowego. 
+
+Uruchamia kernel Open\+CL przez zadaną liczbę iteracji oraz zapisuje wynikowy obraz do pliku. Mierzy też czas wykonania kernela.
+
+\begin{DoxyReturn}{Zwraca}
+SDK\+\_\+\+SUCCESS w przypadku sukcesu, SDK\+\_\+\+FAILURE w razie błędu 
+\end{DoxyReturn}
+\begin{DoxyNote}{Nota}
+Funkcja została napisana na podstawie analogicznej funkcji z przykładowej aplikacji pakietu AMD SDK. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classLocalEntropy_a97c79891946e4c544e969ae0c312cd65}\label{classLocalEntropy_a97c79891946e4c544e969ae0c312cd65}} 
+\index{LocalEntropy@{LocalEntropy}!runCLKernels@{runCLKernels}}
+\index{runCLKernels@{runCLKernels}!LocalEntropy@{LocalEntropy}}
+\doxysubsubsection{\texorpdfstring{runCLKernels()}{runCLKernels()}}
+{\footnotesize\ttfamily int Local\+Entropy\+::run\+CLKernels (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Uruchamia kernele Open\+CL do przetwarzania obrazu. 
+
+Funkcja wykonuje następujące kroki\+:
+\begin{DoxyItemize}
+\item Kopiuje dane wejściowe do bufora obrazu w pamięci urządzenia.
+\item Uruchamia kernel konwertujące obraz do skali szarości.
+\item Uruchamia kernel obliczające lokalną entropię na podstawie przetworzonego obrazu.
+\item Odczytuje wynikowe dane obrazu z powrotem do pamięci hosta (komputera, na którym działa program).
+\end{DoxyItemize}
+
+\begin{DoxyReturn}{Zwraca}
+SDK\+\_\+\+SUCCESS (0) w przypadku powodzenia, SDK\+\_\+\+FAILURE (1) w przypadku błędu wykonania.
+\end{DoxyReturn}
+\begin{DoxyNote}{Nota}
+Funkcja wymaga poprawnej konfiguracji kontekstu i kernelów (np. przez \mbox{\hyperlink{classLocalEntropy_a975a1f99f40e6b869d31723918771ed3}{setup\+CL()}}). Funkcja została napisana na podstawie analogicznej funkcji z przykładowej aplikacji pakietu AMD SDK. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classLocalEntropy_a2aa2305e999a0de90b6e56b223c8434e}\label{classLocalEntropy_a2aa2305e999a0de90b6e56b223c8434e}} 
+\index{LocalEntropy@{LocalEntropy}!setup@{setup}}
+\index{setup@{setup}!LocalEntropy@{LocalEntropy}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily int Local\+Entropy\+::setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Konfiguruje środowisko przed uruchomieniem obliczeń. 
+
+Przetwarza parametry wejściowe, nazwa pliku wejściowego, rozmiary elementu strukturalnego oraz jego kształt (szczegóły dostępne po uruchomieniu programu z opcją --help). Następnie wczytuje obraz wejściowy, tworzy element strukturalny zgodnie z ustawieniami oraz inicjalizuje Open\+CL i timery do pomaru czasu wykonywania się programu.
+
+\begin{DoxyReturn}{Zwraca}
+SDK\+\_\+\+SUCCESS w przypadku powodzenia, SDK\+\_\+\+FAILURE w przypadku błędów 
+\end{DoxyReturn}
+\begin{DoxyNote}{Nota}
+Funkcja została napisana na podstawie analogicznej funkcji z przykładowej aplikacji pakietu AMD SDK. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classLocalEntropy_a975a1f99f40e6b869d31723918771ed3}\label{classLocalEntropy_a975a1f99f40e6b869d31723918771ed3}} 
+\index{LocalEntropy@{LocalEntropy}!setupCL@{setupCL}}
+\index{setupCL@{setupCL}!LocalEntropy@{LocalEntropy}}
+\doxysubsubsection{\texorpdfstring{setupCL()}{setupCL()}}
+{\footnotesize\ttfamily int Local\+Entropy\+::setup\+CL (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Inicjalizuje środowisko Open\+CL. 
+
+Wybiera platformę i urządzenie (CPU lub GPU), tworzy konteksty, kolejkę poleceń oraz obrazy i bufory pamięci dla programu. Wczytuje i kompiluje pliki kerneli Open\+CL. W razie potrzeby wyświetla informacje o błędach.
+
+\begin{DoxyReturn}{Zwraca}
+SDK\+\_\+\+SUCCESS (0) w przypadku powodzenia, SDK\+\_\+\+FAILURE (1) w przypadku błędu inicjalizacji.
+\end{DoxyReturn}
+\begin{DoxyNote}{Nota}
+Funkcja została napisana na podstawie analogicznej funkcji z przykładowej aplikacji pakietu AMD SDK. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classLocalEntropy_a6215165f5a05749864948181384bec51}\label{classLocalEntropy_a6215165f5a05749864948181384bec51}} 
+\index{LocalEntropy@{LocalEntropy}!writeOutputImage@{writeOutputImage}}
+\index{writeOutputImage@{writeOutputImage}!LocalEntropy@{LocalEntropy}}
+\doxysubsubsection{\texorpdfstring{writeOutputImage()}{writeOutputImage()}}
+{\footnotesize\ttfamily int Local\+Entropy\+::write\+Output\+Image (\begin{DoxyParamCaption}\item[{std\+::string}]{output\+Image\+Name }\end{DoxyParamCaption})}
+
+
+
+Zapisuje dane wyjściowego obrazu do pliku .bmp. 
+
+Kopiuje dane z bufora wyjściowego do bufora pikseli i zapisuje dane do pliku .bmp o podanej nazwie. Jeśli operacja zapisu się nie powiedzie, wypisywany jest komunikat błędu, a funkcja zwraca kod błędu.
+
+
+\begin{DoxyParams}{Parametry}
+{\em output\+Image\+Name} & Ścieżka pliku .bmp do zapisania danych. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Zwraca}
+SDK\+\_\+\+SUCCESS (0) jeśli zapis się powiódł, SDK\+\_\+\+FAILURE (1) w przypadku niepowodzenia.
+\end{DoxyReturn}
+\begin{DoxyNote}{Nota}
+Funkcja w całości pochodzi z przykładowej aplikacji pakietu AMD SDK. 
+\end{DoxyNote}
+
+
+\doxysubsection{Dokumentacja pól}
+\mbox{\Hypertarget{classLocalEntropy_a964753e270d71e495fbf717a6ff5b4b9}\label{classLocalEntropy_a964753e270d71e495fbf717a6ff5b4b9}} 
+\index{LocalEntropy@{LocalEntropy}!sampleArgs@{sampleArgs}}
+\index{sampleArgs@{sampleArgs}!LocalEntropy@{LocalEntropy}}
+\doxysubsubsection{\texorpdfstring{sampleArgs}{sampleArgs}}
+{\footnotesize\ttfamily CLCommand\+Args$\ast$ Local\+Entropy\+::sample\+Args}
+
+klasa obsługująca argumenty wejściowe CL 
+
+Dokumentacja dla tej klasy została wygenerowana z plików\+:\begin{DoxyCompactItemize}
+\item 
+Local\+Entropy.\+hpp\item 
+Local\+Entropy.\+cpp\end{DoxyCompactItemize}
