@@ -5,3 +5,8 @@ LocalEntropy/Makefile
 LocalEntropy/bin/**
 LocalEntropy/*build*/**
 .vscode
+*.tif
+*.bmp
+*.zip
+*.rar
+*.tar

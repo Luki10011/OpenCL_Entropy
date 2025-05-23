@@ -468,6 +468,9 @@ LocalEntropy::runCLKernels()
     cl::NDRange globalThreads(width, height);
     cl::NDRange localThreads(blockSizeX, blockSizeY);
 
+    // printf("global: %d, %d\n", width, height);
+    // printf("local: %d, %d\n", blockSizeX, blockSizeY);
+
     cl::Event histEvt;
     status = commandQueue.enqueueNDRangeKernel(
                 grayscaleKernel,
@@ -507,6 +510,9 @@ LocalEntropy::runCLKernels()
 
     status = entropyKernel.setArg(4, nStruct);
     CHECK_OPENCL_ERROR(status, "Kernel::setArg() failed. (nStruct)");
+
+    status = entropyKernel.setArg(5, structShape[0]);  // First letter of struct shape
+    CHECK_OPENCL_ERROR(status, "Kernel::setArg() failed. (structLetter)");
 
     cl::Event entropyEvent;
     status = commandQueue.enqueueNDRangeKernel(
@@ -805,9 +811,9 @@ LocalEntropy::setup()
 
     // create structure element
     if (structShape == "rectangle" || structShape == "square") {
-        structElem = generateEllipse(mStruct, nStruct);
-    } else if (structShape == "circle" || structShape == "ellipse") {
         structElem = generateRectangle(mStruct, nStruct);
+    } else if (structShape == "circle" || structShape == "ellipse") {
+        structElem = generateEllipse(mStruct, nStruct);
     } else {
         std::cout << "Failed to create structure element. Unknown structure element name." << std::endl;
         return SDK_FAILURE;
