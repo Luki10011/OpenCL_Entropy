@@ -531,7 +531,10 @@ LocalEntropy::runCLKernels()
     /*
     * Enqueue a kernel run call.
     */
-    cl::NDRange globalThreads(width, height);
+    size_t globalSizeX = ((width + blockSizeX - 1) / blockSizeX) * blockSizeX;
+    size_t globalSizeY = ((height + blockSizeY - 1) / blockSizeY) * blockSizeY;
+
+    cl::NDRange globalThreads(globalSizeX, globalSizeY);
     cl::NDRange localThreads(blockSizeX, blockSizeY);
 
     // printf("global: %d, %d\n", width, height);
