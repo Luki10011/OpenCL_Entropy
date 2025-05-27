@@ -36,7 +36,7 @@ You need to run this commands in roder to build project on windows
 ```
 mkdir build
 cd build
-cmake -G "MinGW Makefiles" ..
+cmake .. -G "MinGW Makefiles"
 mingw32-make
 
 ```
