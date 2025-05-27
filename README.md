@@ -42,13 +42,26 @@ mingw32-make
 ```
 
 # Requirements
-Do poprawy i uzupełnienia - dodałem tak orientacyjnie, żeby nie zapomnieć potem - Roman
+
 ### Program model in python
- - python 3.11
- - opencv-python
- - skimage
- - numpy
+- Python 3.10.12
+- imageio==2.37.0
+- lazy_loader==0.4
+- networkx==3.4.2
+- numpy==2.2.6
+- opencv-python==4.11.0.86
+- packaging==25.0
+- pillow==11.2.1
+- scikit-image==0.25.2
+- scipy==1.15.3
+- tifffile==2025.5.10
+
+To install required python packages, in `python_modek` directory run command:
+```
+pip install -r requirements.txt
+```
 
 ### OpenCL application
+ - C++ 17
  - OpenCL
  - AMD App SDK 3.0

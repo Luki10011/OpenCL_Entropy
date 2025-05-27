@@ -10,3 +10,4 @@ LocalEntropy/*build*/**
 *.zip
 *.rar
 *.tar
+**/.venv/
