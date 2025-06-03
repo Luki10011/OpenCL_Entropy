@@ -1,4 +1,4 @@
-# Objects counting with entropy
+# Local entropy application
 
 The goal of the project is to implement local entropy algorithm and accelerate computation with OpenCL and GPU
 
